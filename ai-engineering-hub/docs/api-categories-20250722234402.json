@@ -1,0 +1,1 @@
+{"apiFields":[{"fieldId":"name","name":"カテゴリー名","kind":"text","required":false,"isUnique":false},{"fieldId":"slug","name":"ID","kind":"text","required":false},{"fieldId":"description","name":"概要","kind":"textArea","required":false}],"customFields":[]}
