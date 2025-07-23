@@ -30,10 +30,26 @@ const targetAudienceLabels = {
   both: 'エンジニア・企業向け',
 }
 
+const getFallbackImageByCategory = (categorySlug?: string) => {
+  const categoryImageMap: Record<string, string> = {
+    'implementation': '/image1.png',  // 実装事例
+    'research': '/image2.png',        // 技術調査
+    'efficiency': '/image3.png',      // 業務効率化
+    'tips': '/image4.png',           // 開発Tips
+  }
+  
+  if (categorySlug && categoryImageMap[categorySlug]) {
+    return categoryImageMap[categorySlug]
+  }
+  
+  // デフォルト画像
+  return '/image1.png'
+}
+
 export default function ArticleCard({ article, priority = false }: ArticleCardProps) {
-  const optimizedImageUrl = article.featuredImage?.url
-    ? microCMSUtils.optimizeImageUrl(article.featuredImage.url, 400, 240)
-    : null
+  const optimizedImageUrl = article.featured_image?.url
+    ? microCMSUtils.optimizeImageUrl(article.featured_image.url, 400, 240)
+    : getFallbackImageByCategory(article.category?.slug)
 
   return (
     <article className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg hover:border-accent-500/20 transition-all duration-300 transform hover:-translate-y-1">
@@ -41,22 +57,14 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
         {/* Featured Image */}
         <Link href={`/articles/${article.slug}`} className="block">
           <div className="aspect-video relative overflow-hidden bg-gray-100">
-            {optimizedImageUrl ? (
-              <Image
-                src={optimizedImageUrl}
-                alt={article.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                priority={priority}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                <div className="text-primary-600 text-lg font-medium">
-                  AI Engineering Hub
-                </div>
-              </div>
-            )}
+            <Image
+              src={optimizedImageUrl}
+              alt={article.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              priority={priority}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
             
             {/* Content Type Badge */}
             <div className="absolute top-3 left-3">

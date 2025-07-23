@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Github, Twitter, Mail } from 'lucide-react'
+import { Github, Twitter } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { getCategories } from '@/lib/microcms'
 import { Category } from '@/types/microcms'
@@ -13,16 +13,11 @@ const footerLinks = {
     { name: 'Categories', href: '/categories' },
     { name: 'About', href: '/about' },
   ],
-  legal: [
-    { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/terms' },
-  ],
 }
 
 const socialLinks = [
   { name: 'GitHub', href: '#', icon: Github },
   { name: 'Twitter', href: '#', icon: Twitter },
-  { name: 'Email', href: '#', icon: Mail },
 ]
 
 export default function Footer() {
@@ -45,7 +40,7 @@ export default function Footer() {
   return (
     <footer className="bg-primary-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Site Info */}
           <div className="lg:col-span-1">
             <h3 className="text-lg font-bold mb-4">AI Engineering Hub</h3>
@@ -110,24 +105,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal Links */}
-          <div>
-            <h4 className="text-sm font-semibold text-gray-200 uppercase tracking-wider mb-4">
-              法的情報
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.legal.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    href={item.href}
-                    className="text-gray-300 hover:text-white transition-colors duration-200"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
         {/* Bottom Bar */}

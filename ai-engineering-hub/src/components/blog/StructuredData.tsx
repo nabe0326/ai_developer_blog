@@ -10,7 +10,7 @@ export function ArticleStructuredData({ article }: ArticleStructuredDataProps) {
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
-    image: article.featuredImage?.url,
+    image: article.featured_image?.url,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: {

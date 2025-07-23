@@ -198,7 +198,7 @@ export default function AboutPage() {
               メールでお問い合わせ
             </a>
             <a
-              href="https://github.com/ai-engineering-hub"
+              href="https://github.com/nabe0326"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-200"
@@ -207,7 +207,7 @@ export default function AboutPage() {
               GitHub
             </a>
             <a
-              href="https://twitter.com/ai_engineering_hub"
+              href="https://x.com/nabe_AI_dev"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-200"

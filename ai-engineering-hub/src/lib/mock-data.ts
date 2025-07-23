@@ -10,7 +10,7 @@ export const mockCategories: Category[] = [
     revisedAt: '2024-01-01T00:00:00.000Z',
     name: '実装事例',
     slug: 'implementation',
-    description: 'AI技術の実装事例を紹介'
+    description: 'Difyアプリ開発、APIインテグレーション、業務自動化'
   },
   {
     id: '2',
@@ -20,7 +20,27 @@ export const mockCategories: Category[] = [
     revisedAt: '2024-01-01T00:00:00.000Z',
     name: '技術調査',
     slug: 'research',
-    description: '最新AI技術の調査と分析'
+    description: '新AI技術、ツール比較、パフォーマンス分析'
+  },
+  {
+    id: '3',
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
+    publishedAt: '2024-01-01T00:00:00.000Z',
+    revisedAt: '2024-01-01T00:00:00.000Z',
+    name: '業務効率化',
+    slug: 'efficiency',
+    description: '導入事例、ROI分析、運用ノウハウ'
+  },
+  {
+    id: '4',
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
+    publishedAt: '2024-01-01T00:00:00.000Z',
+    revisedAt: '2024-01-01T00:00:00.000Z',
+    name: '開発Tips',
+    slug: 'tips',
+    description: 'プロンプトエンジニアリング、デバッグ、ベストプラクティス'
   },
 ];
 
@@ -37,7 +57,7 @@ export const mockArticles: Article[] = [
     excerpt: 'AI Engineering Hubの開設記事です。実践的なAI技術情報を発信するブログサイトとして、エンジニア・企業向けに有用な情報を提供していきます。',
     category: mockCategories[0],
     tags: 'AI,ブログ,技術情報',
-    featuredImage: {
+    featured_image: {
       url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400',
       width: 800,
       height: 400
@@ -60,7 +80,7 @@ export const mockArticles: Article[] = [
     excerpt: 'Next.js 15とMicroCMSを使用した高品質なブログサイトの構築方法を詳しく解説します。SEO最適化とパフォーマンス向上のテクニックも紹介。',
     category: mockCategories[1],
     tags: 'Next.js,MicroCMS,ブログ構築,SEO',
-    featuredImage: {
+    featured_image: {
       url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400',
       width: 800,
       height: 400
@@ -83,7 +103,7 @@ export const mockArticles: Article[] = [
     excerpt: 'Dify 1.6.0の新機能であるMCP連携を実際に実装した経験をまとめています。実装手順と注意点を詳しく解説。',
     category: mockCategories[0], // implementation
     tags: 'Dify,MCP,実装,連携',
-    featuredImage: {
+    featured_image: {
       url: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&h=400',
       width: 800,
       height: 400
@@ -106,7 +126,7 @@ export const mockArticles: Article[] = [
     excerpt: 'AI支援開発環境のClaude CodeとCursorを詳しく比較。機能面での違いと実際の使用感をレビューします。',
     category: mockCategories[1], // research
     tags: 'Claude Code,Cursor,AI開発,比較',
-    featuredImage: {
+    featured_image: {
       url: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400',
       width: 800,
       height: 400
@@ -127,9 +147,9 @@ export const mockArticles: Article[] = [
     slug: 'prompt-engineering-best-practices',
     content: '# プロンプトエンジニアリングのベストプラクティス\n\n効果的なプロンプト設計のための実践的なガイドラインをまとめました。\n\n## 基本原則\n\n1. 明確性\n2. 具体性\n3. 文脈の提供\n4. 例示の活用\n\n## 実践テクニック\n\n### Chain of Thought\n段階的な思考プロセスを促すテクニック\n\n### Few-shot Learning\n少数の例を提示することで精度向上\n\nこれらのテクニックを組み合わせることで、より良い結果が得られます。',
     excerpt: 'AIとの対話を最適化するプロンプトエンジニアリングの実践的なテクニックとベストプラクティスを紹介します。',
-    category: mockCategories[0], // implementation
+    category: mockCategories[3], // tips
     tags: 'プロンプト,エンジニアリング,AI,ベストプラクティス',
-    featuredImage: {
+    featured_image: {
       url: 'https://images.unsplash.com/photo-1592609931095-54a2168ae893?w=800&h=400',
       width: 800,
       height: 400
@@ -138,6 +158,29 @@ export const mockArticles: Article[] = [
     targetAudience: 'both',
     difficultyLevel: 'beginner',
     reading_time: 10,
+    status: 'published'
+  },
+  {
+    id: '6',
+    createdAt: '2024-01-06T00:00:00.000Z',
+    updatedAt: '2024-01-06T00:00:00.000Z',
+    publishedAt: '2024-01-06T00:00:00.000Z',
+    revisedAt: '2024-01-06T00:00:00.000Z',
+    title: 'AI導入による業務効率化のROI分析',
+    slug: 'ai-efficiency-roi-analysis',
+    content: '# AI導入による業務効率化のROI分析\n\n企業でのAI導入について、実際のROI（投資対効果）を分析した事例を紹介します。\n\n## 導入前の課題\n\n- 手作業による業務の非効率性\n- 人的ミスの発生\n- 処理時間の長さ\n\n## AI導入後の効果\n\n### 定量的効果\n- 処理時間の80%削減\n- エラー率の95%減少\n- 人件費の40%削減\n\n### 定性的効果\n- 従業員満足度の向上\n- 創造的業務への時間確保\n- 顧客満足度の向上\n\n## 投資回収期間\n\n導入から6ヶ月で投資回収を達成しました。',
+    excerpt: '企業におけるAI導入の実際のROI分析事例を紹介。定量的・定性的効果と投資回収期間について詳しく解説します。',
+    category: mockCategories[2], // efficiency
+    tags: 'AI導入,ROI,業務効率化,企業',
+    featured_image: {
+      url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400',
+      width: 800,
+      height: 400
+    },
+    contentType: 'research',
+    targetAudience: 'enterprise',
+    difficultyLevel: 'intermediate',
+    reading_time: 7,
     status: 'published'
   },
 ];

@@ -29,6 +29,22 @@ export async function generateStaticParams() {
 // ISR設定（10分間キャッシュ）
 export const revalidate = 600;
 
+const getFallbackImageByCategory = (categorySlug?: string) => {
+  const categoryImageMap: Record<string, string> = {
+    'implementation': '/image1.png',  // 実装事例
+    'research': '/image2.png',        // 技術調査
+    'efficiency': '/image3.png',      // 業務効率化
+    'tips': '/image4.png',           // 開発Tips
+  }
+  
+  if (categorySlug && categoryImageMap[categorySlug]) {
+    return categoryImageMap[categorySlug]
+  }
+  
+  // デフォルト画像
+  return '/image1.png'
+}
+
 // 動的メタデータ
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
@@ -42,22 +58,62 @@ export async function generateMetadata(
     };
   }
 
+  const ogImage = article.featured_image?.url || getFallbackImageByCategory(article.category?.slug)
+  const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'}${ogImage}`
+
   return {
     title: `${article.title} | AI Engineering Hub`,
     description: article.excerpt,
+    keywords: article.tags ? (Array.isArray(article.tags) ? article.tags.join(', ') : article.tags) : undefined,
+    authors: [{ name: 'AI Engineering Hub' }],
+    creator: 'AI Engineering Hub',
+    publisher: 'AI Engineering Hub',
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
     openGraph: {
       title: article.title,
       description: article.excerpt,
       type: 'article',
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
       authors: ['AI Engineering Hub'],
-      images: article.featuredImage ? [article.featuredImage.url] : [],
+      tags: article.tags ? (Array.isArray(article.tags) ? article.tags : article.tags.split(',').map(tag => tag.trim())) : undefined,
+      images: [
+        {
+          url: absoluteOgImage,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        }
+      ],
+      siteName: 'AI Engineering Hub',
+      locale: 'ja_JP',
     },
     twitter: {
       card: 'summary_large_image',
+      site: '@ai_engineering_hub',
+      creator: '@ai_engineering_hub',
       title: article.title,
       description: article.excerpt,
-      images: article.featuredImage ? [article.featuredImage.url] : [],
+      images: [absoluteOgImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    verification: {
+      google: process.env.GOOGLE_VERIFICATION,
     },
   };
 }
