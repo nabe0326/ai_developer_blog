@@ -59,7 +59,8 @@ export async function generateMetadata(
   }
 
   const ogImage = article.featured_image?.url || getFallbackImageByCategory(article.category?.slug)
-  const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'}${ogImage}`
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'
+  const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
 
   return {
     title: `${article.title} | AI Engineering Hub`,
@@ -77,6 +78,7 @@ export async function generateMetadata(
       title: article.title,
       description: article.excerpt,
       type: 'article',
+      url: `${siteUrl}/articles/${article.slug}`,
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
       authors: ['AI Engineering Hub'],
