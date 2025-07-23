@@ -91,3 +91,10 @@ a:hover {
   opacity: 0.8;
 }
 
+/* --- Markdown/記事用テーブルの横スクロール対応 --- */
+.prose table {
+  width: 100%;
+  min-width: 600px;
+  display: table;
+}
+

@@ -123,7 +123,7 @@ const components = {
     </blockquote>
   ),
   table: ({ children, ...props }: MarkdownProps) => (
-    <div className="overflow-x-auto my-4 sm:my-6 -mx-4 sm:mx-0">
+    <div className="overflow-x-auto w-full max-w-full my-4 sm:my-6">
       <table className="min-w-full border border-gray-300 text-sm sm:text-base" {...props}>
         {children}
       </table>
@@ -329,7 +329,7 @@ function processHtmlContent(content: string): string {
     .replace(/<em([^>]*)>/gi, '<em class="italic text-gray-800"$1>')
     .replace(/<a([^>]*?)>/gi, '<a class="text-accent-600 hover:text-accent-700 underline transition-colors duration-200" target="_blank" rel="noopener noreferrer"$1>')
     .replace(/<code([^>]*)>/gi, '<code class="bg-gray-100 text-gray-800 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm font-mono"$1>')
-    .replace(/<table([^>]*)>/gi, '<div class="overflow-x-auto my-6 sm:my-8 -mx-4 sm:mx-0"><table class="min-w-full border border-gray-300 rounded-lg text-sm sm:text-base"$1>')
+    .replace(/<table([^>]*)>/gi, '<div class="overflow-x-auto w-full max-w-full my-6 sm:my-8"><table class="min-w-full border border-gray-300 rounded-lg text-sm sm:text-base"$1>')
     .replace(/<\/table>/gi, '</table></div>')
     .replace(/<thead([^>]*)>/gi, '<thead class="bg-gray-50"$1>')
     .replace(/<th([^>]*)>/gi, '<th class="border border-gray-300 px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold text-gray-900 text-sm sm:text-base"$1>')
@@ -556,8 +556,8 @@ export default function ArticleContentClient({ content }: ArticleContentClientPr
         )}
 
         {/* 記事本文 */}
-        <div className="prose max-w-none p-4 sm:p-6 md:p-8 lg:p-12 leading-relaxed">
-          <div className="max-w-full overflow-hidden">
+        <div className="p-4 sm:p-6 md:p-8 lg:p-12 leading-relaxed">
+          <div className="prose max-w-none max-w-full overflow-hidden">
             {isHtml ? (
               <HtmlContentWithSyntaxHighlighting content={content} />
             ) : (

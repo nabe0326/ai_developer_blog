@@ -23,21 +23,37 @@ export const metadata: Metadata = {
   keywords: ['AI', '人工知能', 'Claude', 'GPT', 'プロンプトエンジニアリング'],
   authors: [{ name: 'AI Engineering Hub' }],
   creator: 'AI Engineering Hub',
-  metadataBase: new URL('https://ai-engineering-hub.com'),
+  metadataBase: new URL('https://ai-developer-blog.vercel.app'),
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
-    url: 'https://ai-engineering-hub.com',
+    url: 'https://ai-developer-blog.vercel.app',
     siteName: 'AI Engineering Hub',
     title: 'AI Engineering Hub - 実践的AI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
+    images: [
+      {
+        url: 'https://ai-developer-blog.vercel.app/image4.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI Brain',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@ai_engineering_hub',
+    images: [
+      {
+        url: 'https://ai-developer-blog.vercel.app/image4.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI Brain',
+      },
+    ],
   },
   verification: {
-    google: 'google-site-verification-code',
+    google: 'google-site-nP6rQVSUrvnNnC85ldEfpWqR8NKVQwFH1w3IDkn9SaY',
   },
 };
 
