@@ -180,46 +180,46 @@ export default async function ArticlePage({
       </div>
 
       {/* Article Header */}
-      <article className="max-w-7xl mx-auto px-4 py-12 relative">
-        <header className="mb-12">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 relative">
+        <header className="mb-8 sm:mb-12">
           {/* Badges */}
-          <div className="flex flex-wrap gap-3 mb-6">
-            <span className="px-4 py-2 bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold rounded-full shadow-sm">
+          <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-accent-500 to-accent-600 text-white text-xs sm:text-sm font-semibold rounded-full shadow-sm">
               {contentTypeLabels[article.contentType]}
             </span>
-            <span className={`px-4 py-2 text-sm font-semibold rounded-full shadow-sm ${difficultyColors[article.difficultyLevel]}`}>
+            <span className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-full shadow-sm ${difficultyColors[article.difficultyLevel]}`}>
               {difficultyLabels[article.difficultyLevel]}
             </span>
-            <span className="px-4 py-2 bg-primary-50 text-primary-700 text-sm font-semibold rounded-full border border-primary-200">
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-primary-50 text-primary-700 text-xs sm:text-sm font-semibold rounded-full border border-primary-200">
               {targetAudienceLabels[article.targetAudience]}
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold text-primary-900 mb-6 leading-tight bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-900 mb-4 sm:mb-6 leading-tight bg-gradient-to-r from-primary-900 to-primary-700 bg-clip-text text-transparent">
             {article.title}
           </h1>
 
           {/* Excerpt */}
-          <p className="text-xl text-gray-700 mb-8 leading-relaxed font-light">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 sm:mb-8 leading-relaxed font-light">
             {article.excerpt}
           </p>
 
           {/* Meta Information */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-8 p-6 bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200/50">
-            <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
-              <Calendar className="w-4 h-4 mr-2 text-accent-600" />
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm text-gray-600 mb-6 sm:mb-8 p-4 sm:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-gray-200/50">
+            <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
+              <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
               <time dateTime={article.publishedAt}>
                 {formatDate(article.publishedAt)}
               </time>
             </div>
-            <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
-              <Clock className="w-4 h-4 mr-2 text-accent-600" />
+            <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
               <span>{article.reading_time}分で読める</span>
             </div>
             {article.category && (
-              <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
-                <Tag className="w-4 h-4 mr-2 text-accent-600" />
+              <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
+                <Tag className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
                 <Link 
                   href={`/categories/${article.category.slug}`}
                   className="hover:text-accent-600 transition-colors duration-200 font-medium"
@@ -228,15 +228,15 @@ export default async function ArticlePage({
                 </Link>
               </div>
             )}
-            <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
-              <User className="w-4 h-4 mr-2 text-accent-600" />
+            <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
+              <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
               <span className="font-medium">AI Engineering Hub</span>
             </div>
           </div>
 
           {/* Tags */}
           {article.tags && (
-            <div className="flex flex-wrap gap-3 mb-10">
+            <div className="flex flex-wrap gap-2 sm:gap-3 mb-8 sm:mb-10">
               {(() => {
                 // タグを配列として処理
                 const tagArray = Array.isArray(article.tags) 
@@ -249,7 +249,7 @@ export default async function ArticlePage({
                   <Link
                     key={index}
                     href={`/tags/${encodeURIComponent(tag)}`}
-                    className="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-full hover:border-accent-300 hover:bg-accent-50 hover:text-accent-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 text-gray-700 text-xs sm:text-sm font-medium rounded-full hover:border-accent-300 hover:bg-accent-50 hover:text-accent-700 transition-all duration-300 shadow-sm hover:shadow-md"
                   >
                     #{tag}
                   </Link>
@@ -261,10 +261,10 @@ export default async function ArticlePage({
 
         {/* Article Content with Sidebar Layout */}
         <div className="max-w-7xl mx-auto relative">
-          <div className="flex gap-8">
+          <div className="flex flex-col xl:flex-row gap-6 xl:gap-8">
             {/* Main Content */}
-            <div className="flex-1 max-w-4xl">
-              <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
+            <div className="flex-1 xl:max-w-4xl min-w-0">
+              <div className="bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
                 <ArticleContent content={article.content} />
               </div>
             </div>

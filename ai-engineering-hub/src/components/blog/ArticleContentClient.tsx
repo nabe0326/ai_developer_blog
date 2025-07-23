@@ -98,7 +98,7 @@ const components = {
     </h4>
   ),
   p: ({ children, ...props }: MarkdownProps) => (
-    <p className="mb-6 leading-loose text-gray-800 text-base md:text-lg" {...props}>
+    <p className="mb-4 sm:mb-6 leading-relaxed sm:leading-loose text-gray-800 text-sm sm:text-base md:text-lg" {...props}>
       {children}
     </p>
   ),
@@ -113,18 +113,18 @@ const components = {
     </ol>
   ),
   li: ({ children, ...props }: MarkdownProps) => (
-    <li className="text-gray-800 leading-loose text-base md:text-lg" {...props}>
+    <li className="text-gray-800 leading-relaxed sm:leading-loose text-sm sm:text-base md:text-lg" {...props}>
       {children}
     </li>
   ),
   blockquote: ({ children, ...props }: MarkdownProps) => (
-    <blockquote className="border-l-4 border-accent-500 pl-6 py-4 my-8 bg-gradient-to-r from-accent-50/50 to-primary-50/30 rounded-r-lg italic text-gray-800 text-base md:text-lg leading-loose" {...props}>
+    <blockquote className="border-l-4 border-accent-500 pl-4 sm:pl-6 py-3 sm:py-4 my-6 sm:my-8 bg-gradient-to-r from-accent-50/50 to-primary-50/30 rounded-r-lg italic text-gray-800 text-sm sm:text-base md:text-lg leading-relaxed sm:leading-loose" {...props}>
       {children}
     </blockquote>
   ),
   table: ({ children, ...props }: MarkdownProps) => (
-    <div className="overflow-x-auto my-4">
-      <table className="min-w-full border border-gray-300" {...props}>
+    <div className="overflow-x-auto my-4 sm:my-6 -mx-4 sm:mx-0">
+      <table className="min-w-full border border-gray-300 text-sm sm:text-base" {...props}>
         {children}
       </table>
     </div>
@@ -135,12 +135,12 @@ const components = {
     </thead>
   ),
   th: ({ children, ...props }: MarkdownProps) => (
-    <th className="border border-gray-300 px-4 py-2 text-left font-semibold text-gray-900" {...props}>
+    <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left font-semibold text-gray-900 text-sm sm:text-base" {...props}>
       {children}
     </th>
   ),
   td: ({ children, ...props }: MarkdownProps) => (
-    <td className="border border-gray-300 px-4 py-2 text-gray-700" {...props}>
+    <td className="border border-gray-300 px-2 sm:px-4 py-2 text-gray-700 text-sm sm:text-base" {...props}>
       {children}
     </td>
   ),
@@ -320,20 +320,20 @@ function processHtmlContent(content: string): string {
       
       return `<h${level} id="${existingId}" class="${className}"${attrs1}${attrs2}>${text}</h${level}>`
     })
-    .replace(/<p([^>]*)>/gi, '<p class="mb-6 leading-loose text-gray-800 text-base md:text-lg"$1>')
-    .replace(/<ul([^>]*)>/gi, '<ul class="mb-6 pl-6 space-y-3 list-disc marker:text-accent-500"$1>')
-    .replace(/<ol([^>]*)>/gi, '<ol class="mb-6 pl-6 space-y-3 list-decimal marker:text-accent-500"$1>')
-    .replace(/<li([^>]*)>/gi, '<li class="text-gray-800 leading-loose text-base md:text-lg"$1>')
-    .replace(/<blockquote([^>]*)>/gi, '<blockquote class="border-l-4 border-accent-500 pl-6 py-4 my-8 bg-gradient-to-r from-accent-50/50 to-primary-50/30 rounded-r-lg italic text-gray-800 text-base md:text-lg leading-loose"$1>')
+    .replace(/<p([^>]*)>/gi, '<p class="mb-4 sm:mb-6 leading-relaxed sm:leading-loose text-gray-800 text-sm sm:text-base md:text-lg"$1>')
+    .replace(/<ul([^>]*)>/gi, '<ul class="mb-4 sm:mb-6 pl-4 sm:pl-6 space-y-2 sm:space-y-3 list-disc marker:text-accent-500"$1>')
+    .replace(/<ol([^>]*)>/gi, '<ol class="mb-4 sm:mb-6 pl-4 sm:pl-6 space-y-2 sm:space-y-3 list-decimal marker:text-accent-500"$1>')
+    .replace(/<li([^>]*)>/gi, '<li class="text-gray-800 leading-relaxed sm:leading-loose text-sm sm:text-base md:text-lg"$1>')
+    .replace(/<blockquote([^>]*)>/gi, '<blockquote class="border-l-4 border-accent-500 pl-4 sm:pl-6 py-3 sm:py-4 my-6 sm:my-8 bg-gradient-to-r from-accent-50/50 to-primary-50/30 rounded-r-lg italic text-gray-800 text-sm sm:text-base md:text-lg leading-relaxed sm:leading-loose"$1>')
     .replace(/<strong([^>]*)>/gi, '<strong class="font-semibold text-gray-900"$1>')
     .replace(/<em([^>]*)>/gi, '<em class="italic text-gray-800"$1>')
     .replace(/<a([^>]*?)>/gi, '<a class="text-accent-600 hover:text-accent-700 underline transition-colors duration-200" target="_blank" rel="noopener noreferrer"$1>')
-    .replace(/<code([^>]*)>/gi, '<code class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono"$1>')
-    .replace(/<table([^>]*)>/gi, '<div class="overflow-x-auto my-8"><table class="min-w-full border border-gray-300 rounded-lg"$1>')
+    .replace(/<code([^>]*)>/gi, '<code class="bg-gray-100 text-gray-800 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs sm:text-sm font-mono"$1>')
+    .replace(/<table([^>]*)>/gi, '<div class="overflow-x-auto my-6 sm:my-8 -mx-4 sm:mx-0"><table class="min-w-full border border-gray-300 rounded-lg text-sm sm:text-base"$1>')
     .replace(/<\/table>/gi, '</table></div>')
     .replace(/<thead([^>]*)>/gi, '<thead class="bg-gray-50"$1>')
-    .replace(/<th([^>]*)>/gi, '<th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900"$1>')
-    .replace(/<td([^>]*)>/gi, '<td class="border border-gray-300 px-4 py-3 text-gray-800"$1>')
+    .replace(/<th([^>]*)>/gi, '<th class="border border-gray-300 px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold text-gray-900 text-sm sm:text-base"$1>')
+    .replace(/<td([^>]*)>/gi, '<td class="border border-gray-300 px-2 sm:px-4 py-2 sm:py-3 text-gray-800 text-sm sm:text-base"$1>')
 }
 
 export default function ArticleContentClient({ content }: ArticleContentClientProps) {
@@ -556,8 +556,8 @@ export default function ArticleContentClient({ content }: ArticleContentClientPr
         )}
 
         {/* 記事本文 */}
-        <div className="prose max-w-none p-6 md:p-8 lg:p-12 leading-relaxed">
-          <div className="max-w-full">
+        <div className="prose max-w-none p-4 sm:p-6 md:p-8 lg:p-12 leading-relaxed">
+          <div className="max-w-full overflow-hidden">
             {isHtml ? (
               <HtmlContentWithSyntaxHighlighting content={content} />
             ) : (
