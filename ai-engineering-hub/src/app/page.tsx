@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
 };
 
-// ISR設定（5分キャッシュ + On-Demand Revalidation）
-export const revalidate = 300;
+// キャッシュなし（常に最新データを取得）
+export const dynamic = 'force-dynamic';
 
 // エラーハンドリング用のフォールバックコンポーネント
 function ArticleGridSkeleton() {
