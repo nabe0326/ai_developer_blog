@@ -16,8 +16,8 @@ const footerLinks = {
 }
 
 const socialLinks = [
-  { name: 'GitHub', href: '#', icon: Github },
-  { name: 'Twitter', href: '#', icon: Twitter },
+  { name: 'GitHub', href: 'https://github.com/nabe0326', icon: Github },
+  { name: 'Twitter', href: 'https://x.com/nabe_AI_dev', icon: Twitter },
 ]
 
 export default function Footer() {
