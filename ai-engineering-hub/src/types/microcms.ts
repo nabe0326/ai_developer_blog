@@ -10,7 +10,7 @@ export interface Article {
   excerpt: string;
   category: Category;
   tags: string;
-  featuredImage?: {
+  featured_image?: {
     url: string;
     width: number;
     height: number;

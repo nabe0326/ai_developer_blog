@@ -37,11 +37,15 @@ export const getArticles = cache(async (queries?: MicroCMSQueries): Promise<Arti
   }
 
   try {
+    // featured_imageフィールドを明示的に指定
+    const defaultFields = 'id,title,slug,content,excerpt,category,tags,featured_image,content_type,target_audience,difficulty_level,reading_time,publishedAt,updatedAt,createdAt,revisedAt';
+    
     return await client.get({
       endpoint: 'articles',
       queries: {
         orders: '-publishedAt',
         limit: 12,
+        fields: queries?.fields || defaultFields,
         ...queries,
       },
     });
@@ -400,7 +404,7 @@ export const getRelatedArticles = cache(async (categoryId: string, currentSlug: 
         filters: `category[equals]${categoryId}[and]slug[not_equals]${currentSlug}`,
         orders: '-publishedAt',
         limit,
-        fields: 'id,title,slug,excerpt,featuredImage,publishedAt,category',
+        fields: 'id,title,slug,excerpt,featured_image,publishedAt,category',
       },
     });
     return response.contents;
