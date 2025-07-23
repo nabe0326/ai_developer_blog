@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Folder, FileText } from 'lucide-react'
-import { categoriesApi, articlesApi } from '@/lib/microcms'
+import { getCategories, getArticlesByCategory } from '@/lib/microcms'
 import { Category } from '@/types/microcms'
 
 export const metadata: Metadata = {
@@ -17,13 +17,13 @@ export const metadata: Metadata = {
 async function getCategoriesWithCounts(): Promise<(Category & { articleCount: number })[]> {
   try {
     // カテゴリ一覧を取得
-    const categoriesResponse = await categoriesApi.getList({ limit: 100 })
+    const categoriesResponse = await getCategories()
     
     // 各カテゴリの記事数を取得
     const categoriesWithCounts = await Promise.all(
       categoriesResponse.contents.map(async (category) => {
         try {
-          const articlesResponse = await articlesApi.getByCategory(category.id, {
+          const articlesResponse = await getArticlesByCategory(category.id, {
             limit: 1, // 記事数だけ知りたいので1件だけ取得
           })
           return {

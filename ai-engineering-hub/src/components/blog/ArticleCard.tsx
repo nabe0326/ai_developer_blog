@@ -31,8 +31,8 @@ const targetAudienceLabels = {
 }
 
 export default function ArticleCard({ article, priority = false }: ArticleCardProps) {
-  const optimizedImageUrl = article.featured_image?.url
-    ? microCMSUtils.optimizeImageUrl(article.featured_image.url, 400, 240)
+  const optimizedImageUrl = article.featuredImage?.url
+    ? microCMSUtils.optimizeImageUrl(article.featuredImage.url, 400, 240)
     : null
 
   return (
@@ -61,16 +61,16 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
             {/* Content Type Badge */}
             <div className="absolute top-3 left-3">
               <span className="px-2 py-1 bg-accent-500 text-white text-xs font-medium rounded-full">
-                {contentTypeLabels[article.content_type]}
+                {contentTypeLabels[article.contentType]}
               </span>
             </div>
 
             {/* Difficulty Badge */}
             <div className="absolute top-3 right-3">
-              <span className={`px-2 py-1 text-xs font-medium rounded-full ${difficultyColors[article.difficulty_level]}`}>
-                {article.difficulty_level === 'beginner' && '初級'}
-                {article.difficulty_level === 'intermediate' && '中級'}
-                {article.difficulty_level === 'advanced' && '上級'}
+              <span className={`px-2 py-1 text-xs font-medium rounded-full ${difficultyColors[article.difficultyLevel]}`}>
+                {article.difficultyLevel === 'beginner' && '初級'}
+                {article.difficultyLevel === 'intermediate' && '中級'}
+                {article.difficultyLevel === 'advanced' && '上級'}
               </span>
             </div>
           </div>
@@ -91,7 +91,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
               </Link>
             )}
             <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-              {targetAudienceLabels[article.target_audience]}
+              {targetAudienceLabels[article.targetAudience]}
             </span>
           </div>
 
@@ -112,7 +112,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
             <div className="flex flex-wrap gap-1 mb-4">
               {(() => {
                 // タグを配列として処理
-                const tagArray = Array.isArray(article.tags) 
+                const tagArray: string[] = Array.isArray(article.tags) 
                   ? article.tags 
                   : typeof article.tags === 'string' 
                     ? article.tags.split(',').map(tag => tag.trim()) 
@@ -130,7 +130,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
                 ))
               })()}
               {(() => {
-                const tagArray = Array.isArray(article.tags) 
+                const tagArray: string[] = Array.isArray(article.tags) 
                   ? article.tags 
                   : typeof article.tags === 'string' 
                     ? article.tags.split(',').map(tag => tag.trim()) 

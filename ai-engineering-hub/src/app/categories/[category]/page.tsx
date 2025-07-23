@@ -1,87 +1,76 @@
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft, Folder } from 'lucide-react'
-import { articlesApi, categoriesApi } from '@/lib/microcms'
-import { Article, Category } from '@/types/microcms'
-import ArticleCard from '@/components/blog/ArticleCard'
-import Pagination from '@/components/ui/Pagination'
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowLeft, Folder } from 'lucide-react';
+import { getCategory, getArticlesByCategory, getCategories } from '@/lib/microcms';
+import ArticleCard from '@/components/blog/ArticleCard';
+import { Pagination } from '@/components/ui/Pagination';
 
-interface CategoryPageProps {
-  params: Promise<{ category: string }>
-  searchParams: Promise<{ page?: string }>
+
+// 静的パス生成
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  
+  return categories.contents.map((category) => ({
+    category: category.slug,
+  }));
 }
 
-async function getCategory(categorySlug: string): Promise<Category | null> {
-  try {
-    const response = await categoriesApi.getList({
-      filters: `slug[equals]${categorySlug}`,
-      limit: 1,
-    })
-    
-    return response.contents[0] || null
-  } catch (error) {
-    console.error('Failed to fetch category:', error)
-    return null
-  }
-}
+// ISR設定（30分間キャッシュ）
+export const revalidate = 1800;
 
-async function getArticlesByCategory(
-  categoryId: string,
-  page: number = 1,
-  limit: number = 12
-): Promise<{ articles: Article[]; totalCount: number }> {
-  try {
-    const offset = (page - 1) * limit
-    const response = await articlesApi.getByCategory(categoryId, {
-      limit,
-      offset,
-    })
-    
-    return {
-      articles: response.contents,
-      totalCount: response.totalCount,
-    }
-  } catch (error) {
-    console.error('Failed to fetch articles by category:', error)
-    return { articles: [], totalCount: 0 }
-  }
-}
-
-export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const { category: categorySlug } = await params
-  const category = await getCategory(categorySlug)
-
+export async function generateMetadata(
+  { params }: { params: Promise<{ category: string }> }
+): Promise<Metadata> {
+  const { category: categorySlug } = await params;
+  const category = await getCategory(categorySlug);
+  
   if (!category) {
     return {
-      title: 'Category Not Found - AI Engineering Hub',
-      description: 'The requested category could not be found.',
-    }
+      title: 'Category Not Found',
+    };
   }
 
   return {
-    title: `${category.name} - AI Engineering Hub`,
+    title: `${category.name} | AI Engineering Hub`,
     description: `${category.name}に関する記事一覧です。AI技術の実践的な情報を発信しています。`,
     openGraph: {
-      title: `${category.name} - AI Engineering Hub`,
-      description: `${category.name}に関する記事一覧です。AI技術の実践的な情報を発信しています。`,
+      title: `${category.name} | AI Engineering Hub`,
+      description: `${category.name}に関する記事一覧です。`,
       type: 'website',
     },
-  }
+    twitter: {
+      card: 'summary',
+      title: `${category.name} | AI Engineering Hub`,
+      description: `${category.name}に関する記事一覧です。`,
+    },
+  };
 }
 
-export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const { category: categorySlug } = await params
-  const { page } = await searchParams
-  const currentPage = page ? parseInt(page, 10) : 1
+export default async function CategoryPage({ 
+  params, 
+  searchParams 
+}: {
+  params: Promise<{ category: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { category: categorySlug } = await params;
+  const { page } = await searchParams;
+  const currentPage = page ? parseInt(page, 10) : 1;
   
-  const category = await getCategory(categorySlug)
+  const category = await getCategory(categorySlug);
   
   if (!category) {
-    notFound()
+    notFound();
   }
 
-  const { articles, totalCount } = await getArticlesByCategory(category.id, currentPage)
+  const response = await getArticlesByCategory(category.id, { 
+    limit: 12, 
+    offset: (currentPage - 1) * 12 
+  });
+  
+  const articles = response.contents;
+  const totalCount = response.totalCount;
   const totalPages = Math.ceil(totalCount / 12)
 
   return (
@@ -134,6 +123,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                 currentPage={currentPage}
                 totalPages={totalPages}
                 baseUrl={`/categories/${categorySlug}`}
+                searchParams={{}}
               />
             )}
           </>

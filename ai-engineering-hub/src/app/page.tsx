@@ -1,9 +1,33 @@
-import { Suspense } from 'react'
-import Link from 'next/link'
-import { ArrowRight, Sparkles } from 'lucide-react'
-import { articlesApi } from '@/lib/microcms'
-import ArticleCard from '@/components/blog/ArticleCard'
-import { Article } from '@/types/microcms'
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { getArticles } from '@/lib/microcms';
+import ArticleCard from '@/components/blog/ArticleCard';
+import { Article, ArticleResponse } from '@/types/microcms';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'AI Engineering Hub - 実践的AI技術情報',
+  description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
+  keywords: ['AI', '人工知能', 'Claude', 'GPT', 'プロンプトエンジニアリング'],
+  authors: [{ name: 'AI Engineering Hub' }],
+  creator: 'AI Engineering Hub',
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: 'https://ai-engineering-hub.com',
+    siteName: 'AI Engineering Hub',
+    title: 'AI Engineering Hub - 実践的AI技術情報',
+    description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: '@ai_engineering_hub',
+  },
+};
+
+// ISR設定（1時間キャッシュ）
+export const revalidate = 3600;
 
 // エラーハンドリング用のフォールバックコンポーネント
 function ArticleGridSkeleton() {
@@ -30,11 +54,11 @@ function ArticleGridSkeleton() {
 
 async function ArticleGrid() {
   try {
-    const response = await articlesApi.getList({
+    const response: ArticleResponse = await getArticles({
       limit: 12,
       orders: '-publishedAt',
-      fields: 'id,title,slug,excerpt,category,tags,featured_image,content_type,target_audience,difficulty_level,estimated_reading_time,publishedAt'
-    })
+      fields: 'id,title,slug,excerpt,category,tags,featuredImage,contentType,targetAudience,difficultyLevel,reading_time,publishedAt'
+    });
     
     if (!response.contents || response.contents.length === 0) {
       return (
@@ -43,7 +67,7 @@ async function ArticleGrid() {
           <h3 className="text-xl font-semibold text-gray-600 mb-2">記事がありません</h3>
           <p className="text-gray-500">まだ記事が投稿されていません。しばらくお待ちください。</p>
         </div>
-      )
+      );
     }
 
     return (
@@ -56,9 +80,9 @@ async function ArticleGrid() {
           />
         ))}
       </div>
-    )
+    );
   } catch (error) {
-    console.error('Failed to fetch articles:', error)
+    console.error('Failed to fetch articles:', error);
     return (
       <div className="text-center py-16">
         <div className="text-red-500 mb-4">
@@ -73,7 +97,7 @@ async function ArticleGrid() {
           <pre className="mt-2 whitespace-pre-wrap">{String(error)}</pre>
         </details>
       </div>
-    )
+    );
   }
 }
 

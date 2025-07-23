@@ -15,10 +15,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Engineering Hub",
-  description: "AI技術の実践的情報を発信するブログサイト。エンジニア・企業向けに最新のAI開発事例、ツール、ノウハウを提供します。",
-  keywords: ["AI", "機械学習", "エンジニア", "開発", "技術ブログ"],
-  authors: [{ name: "AI Engineering Hub" }],
+  title: {
+    template: '%s | AI Engineering Hub',
+    default: 'AI Engineering Hub - 実践的AI技術情報',
+  },
+  description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
+  keywords: ['AI', '人工知能', 'Claude', 'GPT', 'プロンプトエンジニアリング'],
+  authors: [{ name: 'AI Engineering Hub' }],
+  creator: 'AI Engineering Hub',
+  metadataBase: new URL('https://ai-engineering-hub.com'),
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: 'https://ai-engineering-hub.com',
+    siteName: 'AI Engineering Hub',
+    title: 'AI Engineering Hub - 実践的AI技術情報',
+    description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: '@ai_engineering_hub',
+  },
+  verification: {
+    google: 'google-site-verification-code',
+  },
 };
 
 export const viewport = {

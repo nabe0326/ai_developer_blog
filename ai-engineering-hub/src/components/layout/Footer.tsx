@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { Github, Twitter, Mail } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { categoriesApi } from '@/lib/microcms'
+import { getCategories } from '@/lib/microcms'
 import { Category } from '@/types/microcms'
 
 const footerLinks = {
@@ -33,7 +33,7 @@ export default function Footer() {
     // カテゴリ一覧を取得
     const fetchCategories = async () => {
       try {
-        const response = await categoriesApi.getList({ limit: 6 })
+        const response = await getCategories()
         setCategories(response.contents)
       } catch (error) {
         console.error('Failed to fetch categories:', error)

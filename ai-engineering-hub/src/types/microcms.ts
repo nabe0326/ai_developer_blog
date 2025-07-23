@@ -9,15 +9,15 @@ export interface Article {
   content: string;
   excerpt: string;
   category: Category;
-  tags: string[] | string;
-  featured_image?: {
+  tags: string;
+  featuredImage?: {
     url: string;
     width: number;
     height: number;
   };
-  content_type: 'experience' | 'research' | 'tutorial';
-  target_audience: 'engineer' | 'enterprise' | 'both';
-  difficulty_level: 'beginner' | 'intermediate' | 'advanced';
+  contentType: 'experience' | 'research' | 'tutorial';
+  targetAudience: 'engineer' | 'enterprise' | 'both';
+  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
   reading_time: number;
   status: 'published' | 'draft';
 }
@@ -28,8 +28,8 @@ export interface Category {
   updatedAt: string;
   publishedAt: string;
   revisedAt: string;
-  name?: string;
-  slug?: string;
+  name: string;
+  slug: string;
   description?: string;
 }
 
@@ -56,7 +56,7 @@ export interface MicroCMSQueries {
   fields?: string;
   ids?: string;
   filters?: string;
-  depth?: number;
+  depth?: 1 | 2 | 3;
 }
 
 export interface SEOMetadata {
