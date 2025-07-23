@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import { Metadata } from 'next'
 import { Search } from 'lucide-react'
-import { articlesApi } from '@/lib/microcms'
+import { getArticles } from '@/lib/microcms'
 import { Article } from '@/types/microcms'
 import ArticleCard from '@/components/blog/ArticleCard'
-import Pagination from '@/components/ui/Pagination'
+import { Pagination } from '@/components/ui/Pagination'
 
 export const metadata: Metadata = {
   title: '記事一覧 - AI Engineering Hub',
@@ -38,7 +38,7 @@ async function ArticlesList({ page }: { page: number }) {
     const limit = 12
     const offset = (page - 1) * limit
 
-    const response = await articlesApi.getList({
+    const response = await getArticles({
       limit,
       offset,
       orders: '-publishedAt',

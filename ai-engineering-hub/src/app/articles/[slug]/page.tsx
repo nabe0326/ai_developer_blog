@@ -1,95 +1,65 @@
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft, Calendar, Clock, Tag, User } from 'lucide-react'
-import { articlesApi } from '@/lib/microcms'
-import { Article } from '@/types/microcms'
-import { dateUtils } from '@/lib/utils'
-import ArticleContent from '@/components/blog/ArticleContent'
-import ArticleCard from '@/components/blog/ArticleCard'
-import TableOfContents from '@/components/blog/TableOfContents'
+import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { ArrowLeft, Calendar, Clock, Tag, User } from 'lucide-react';
+import { getArticleWithErrorHandling, getAllArticles } from '@/lib/microcms';
+import ArticleContent from '@/components/blog/ArticleContent';
+import { ArticleStructuredData } from '@/components/blog/StructuredData';
+import dynamic from 'next/dynamic';
 
-interface ArticlePageProps {
-  params: Promise<{ slug: string }>
-}
-
-async function getArticle(slug: string): Promise<Article | null> {
-  try {
-    console.log('Fetching article with slug:', slug)
-    
-    // まず全記事を取得してスラッグを確認
-    console.log('First, fetching all articles to check available slugs...')
-    const allArticles = await articlesApi.getList({ limit: 100 })
-    console.log('Available article slugs:', allArticles.contents.map(a => a.slug))
-    
-    // スラッグで検索
-    const response = await articlesApi.getBySlug(slug)
-    console.log('Slug search response:', response)
-    
-    if (response.contents && response.contents.length > 0) {
-      return response.contents[0]
-    } else {
-      console.log('No article found with slug:', slug)
-      return null
-    }
-  } catch (error) {
-    console.error('Failed to fetch article:', error)
-    return null
+// 関連記事コンポーネント
+const RelatedArticles = dynamic(
+  () => import('@/components/blog/RelatedArticles').catch(() => ({ default: () => null })),
+  {
+    loading: () => <div>関連記事を読み込み中...</div>,
   }
+);
+
+
+// 静的パス生成
+export async function generateStaticParams() {
+  const articles = await getAllArticles({ limit: 100 });
+  
+  return articles.map((article) => ({
+    slug: article.slug,
+  }));
 }
 
-async function getRelatedArticles(categoryId: string, currentArticleId: string): Promise<Article[]> {
-  try {
-    const response = await articlesApi.getByCategory(categoryId, {
-      limit: 4,
-      filters: `id[not_equals]${currentArticleId}`,
-    })
-    return response.contents.slice(0, 3)
-  } catch (error) {
-    console.error('Failed to fetch related articles:', error)
-    return []
-  }
-}
+// ISR設定（10分間キャッシュ）
+export const revalidate = 600;
 
-export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
-  const { slug } = await params
-  const article = await getArticle(slug)
-
+// 動的メタデータ
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticleWithErrorHandling(slug);
+  
   if (!article) {
     return {
-      title: 'Article Not Found - AI Engineering Hub',
-      description: 'The requested article could not be found.',
-    }
+      title: 'Article Not Found',
+    };
   }
 
   return {
-    title: `${article.title} - AI Engineering Hub`,
+    title: `${article.title} | AI Engineering Hub`,
     description: article.excerpt,
-    keywords: article.tags,
     openGraph: {
       title: article.title,
       description: article.excerpt,
       type: 'article',
       publishedTime: article.publishedAt,
-      modifiedTime: article.updatedAt,
       authors: ['AI Engineering Hub'],
-      tags: article.tags,
-      images: article.featured_image ? [
-        {
-          url: article.featured_image.url,
-          width: article.featured_image.width,
-          height: article.featured_image.height,
-          alt: article.title,
-        }
-      ] : undefined,
+      images: article.featuredImage ? [article.featuredImage.url] : [],
     },
     twitter: {
       card: 'summary_large_image',
       title: article.title,
       description: article.excerpt,
-      images: article.featured_image ? [article.featured_image.url] : undefined,
+      images: article.featuredImage ? [article.featuredImage.url] : [],
     },
-  }
+  };
 }
 
 const difficultyColors = {
@@ -110,20 +80,36 @@ const targetAudienceLabels = {
   both: 'エンジニア・企業向け',
 }
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
-  const { slug } = await params
-  const article = await getArticle(slug)
+const difficultyLabels = {
+  beginner: '初級',
+  intermediate: '中級',
+  advanced: '上級',
+}
 
+const formatDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+export default async function ArticlePage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params;
+  const article = await getArticleWithErrorHandling(slug);
+  
   if (!article) {
-    notFound()
+    notFound();
   }
-
-  const relatedArticles = article.category 
-    ? await getRelatedArticles(article.category.id, article.id)
-    : []
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <ArticleStructuredData article={article} />
+      
       {/* Back Navigation */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-4 py-4">
@@ -138,20 +124,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </div>
 
       {/* Article Header */}
-      <article className="max-w-4xl xl:max-w-3xl mx-auto px-4 py-12">
+      <article className="max-w-7xl mx-auto px-4 py-12 relative">
         <header className="mb-12">
           {/* Badges */}
           <div className="flex flex-wrap gap-3 mb-6">
             <span className="px-4 py-2 bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold rounded-full shadow-sm">
-              {contentTypeLabels[article.content_type]}
+              {contentTypeLabels[article.contentType]}
             </span>
-            <span className={`px-4 py-2 text-sm font-semibold rounded-full shadow-sm ${difficultyColors[article.difficulty_level]}`}>
-              {article.difficulty_level === 'beginner' && '初級'}
-              {article.difficulty_level === 'intermediate' && '中級'}
-              {article.difficulty_level === 'advanced' && '上級'}
+            <span className={`px-4 py-2 text-sm font-semibold rounded-full shadow-sm ${difficultyColors[article.difficultyLevel]}`}>
+              {difficultyLabels[article.difficultyLevel]}
             </span>
             <span className="px-4 py-2 bg-primary-50 text-primary-700 text-sm font-semibold rounded-full border border-primary-200">
-              {targetAudienceLabels[article.target_audience]}
+              {targetAudienceLabels[article.targetAudience]}
             </span>
           </div>
 
@@ -170,7 +154,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
               <Calendar className="w-4 h-4 mr-2 text-accent-600" />
               <time dateTime={article.publishedAt}>
-                {dateUtils.formatDate(article.publishedAt)}
+                {formatDate(article.publishedAt)}
               </time>
             </div>
             <div className="flex items-center bg-gray-50 px-3 py-2 rounded-lg">
@@ -219,31 +203,42 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           )}
         </header>
 
-        {/* Article Content */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
-          <ArticleContent content={article.content} />
+        {/* Article Content with Sidebar Layout */}
+        <div className="max-w-7xl mx-auto relative">
+          <div className="flex gap-8">
+            {/* Main Content */}
+            <div className="flex-1 max-w-4xl">
+              <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
+                <ArticleContent content={article.content} />
+              </div>
+            </div>
+
+            {/* Right Sidebar - TOC */}
+            <aside className="hidden xl:block w-80 flex-shrink-0">
+              <div className="sticky top-24">
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-sm p-6">
+                  <div className="flex items-center mb-4 pb-3 border-b border-gray-200/50">
+                    <div className="w-2 h-2 bg-accent-500 rounded-full mr-3"></div>
+                    <h3 className="text-base font-bold text-primary-900">
+                      目次
+                    </h3>
+                  </div>
+                  <nav className="max-h-96 overflow-y-auto">
+                    <div id="sidebar-toc-container">
+                      {/* 目次は ArticleContentClient から動的に挿入されます */}
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </aside>
+          </div>
         </div>
       </article>
-      
-      {/* Table of Contents - positioned outside article */}
-      <TableOfContents content={article.content} />
 
-      {/* Related Articles */}
-      {relatedArticles.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 py-16" data-related-section>
-          <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-gray-200/50 shadow-lg">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-primary-900 mb-4">関連記事</h2>
-              <p className="text-gray-600">こちらの記事もおすすめです</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedArticles.map((relatedArticle) => (
-                <ArticleCard key={relatedArticle.id} article={relatedArticle} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* 関連記事（Suspense使用） */}
+      <Suspense fallback={<div className="max-w-6xl mx-auto px-4 py-16 text-center">関連記事を読み込み中...</div>}>
+        <RelatedArticles categoryId={article.category?.id} currentSlug={article.slug} />
+      </Suspense>
     </div>
   )
 }

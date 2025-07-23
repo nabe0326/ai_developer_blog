@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { Search, Menu, X, ChevronDown, Folder } from 'lucide-react'
-import { categoriesApi } from '@/lib/microcms'
+import { useState, useEffect, Suspense } from 'react'
+import { Menu, X, ChevronDown, Folder } from 'lucide-react'
+import { getCategories } from '@/lib/microcms'
 import { Category } from '@/types/microcms'
+import { SearchBar } from '@/components/search/SearchBar'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -22,9 +23,7 @@ export default function Header() {
     const fetchCategories = async () => {
       try {
         console.log('Fetching categories from MicroCMS...')
-        const response = await categoriesApi.getList({ 
-          limit: 100
-        })
+        const response = await getCategories()
         console.log('Categories response:', response)
         console.log('Categories details:', response.contents.map(c => ({ 
           id: c.id, 
@@ -122,15 +121,10 @@ export default function Header() {
           {/* Search and Mobile Menu Button */}
           <div className="flex items-center space-x-4">
             {/* Search Box */}
-            <div className="hidden sm:block relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="記事を検索..."
-                className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 focus:placeholder-gray-500 focus:border-accent-500 focus:ring-1 focus:ring-accent-500 sm:text-sm transition-colors duration-200"
-              />
+            <div className="hidden sm:block w-64">
+              <Suspense fallback={<div className="w-full h-8 bg-gray-200 rounded animate-pulse" />}>
+                <SearchBar className="w-full" />
+              </Suspense>
             </div>
 
             {/* Mobile menu button */}
@@ -195,16 +189,9 @@ export default function Header() {
               
               {/* Mobile Search */}
               <div className="px-3 py-2 border-t border-gray-700 mt-4 pt-4">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Search className="h-4 w-4 text-gray-400" />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="記事を検索..."
-                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:bg-white focus:text-gray-900 focus:placeholder-gray-500 focus:border-accent-500 focus:ring-1 focus:ring-accent-500 text-sm"
-                  />
-                </div>
+                <Suspense fallback={<div className="w-full h-8 bg-gray-200 rounded animate-pulse" />}>
+                  <SearchBar className="w-full" />
+                </Suspense>
               </div>
             </div>
           </div>

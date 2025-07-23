@@ -1,0 +1,260 @@
+
+> dev
+> next dev
+
+   ▲ Next.js 15.4.2
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.40.134:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling /search ...
+ ✓ Compiled /search in 883ms (739 modules)
+Search page params: {
+  query: '',
+  category: 'implementation',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+ GET /search?category=implementation 200 in 1438ms
+ ✓ Compiled in 841ms (753 modules)
+Search page params: {
+  query: '',
+  category: 'implementation',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+ GET /search?category=implementation 200 in 547ms
+ ✓ Compiled in 313ms (753 modules)
+Search page params: {
+  query: '',
+  category: 'implementation',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: {
+    orders: '-publishedAt',
+    limit: 12,
+    offset: 0,
+    filters: 'category.slug[equals]implementation'
+  }
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 100, offset: 0 }
+}
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+MicroCMS API result: {
+  totalCount: 0,
+  returnedCount: 0,
+  filters: 'category.slug[equals]implementation'
+}
+ GET /search?category=implementation 200 in 389ms
+ ✓ Compiled in 214ms (753 modules)
+Search page params: {
+  query: '',
+  category: '',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 12, offset: 0 }
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 100, offset: 0 }
+}
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+MicroCMS Categories: [
+  { id: 'u--bp-qkr', name: '開発Tips', slug: 'tips' },
+  { id: '5_e15nldh5w', name: '業務効率化', slug: 'efficiency' },
+  { id: 'lbhh0sflrm', name: '技術調査', slug: 'research' },
+  { id: 'nzirm2xb2', name: '実装事例', slug: 'implementation' }
+]
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+ GET /search 200 in 457ms
+ ✓ Compiled in 338ms (753 modules)
+Search page params: {
+  query: '',
+  category: 'implementation',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 100, offset: 0 }
+}
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+MicroCMS Categories: [
+  { id: 'u--bp-qkr', name: '開発Tips', slug: 'tips' },
+  { id: '5_e15nldh5w', name: '業務効率化', slug: 'efficiency' },
+  { id: 'lbhh0sflrm', name: '技術調査', slug: 'research' },
+  { id: 'nzirm2xb2', name: '実装事例', slug: 'implementation' }
+]
+Category filter applied: category[equals]nzirm2xb2 for slug: implementation
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: {
+    orders: '-publishedAt',
+    limit: 12,
+    offset: 0,
+    filters: 'category[equals]nzirm2xb2'
+  }
+}
+MicroCMS API result: {
+  totalCount: 3,
+  returnedCount: 3,
+  filters: 'category[equals]nzirm2xb2'
+}
+ GET /search?category=implementation 200 in 719ms
+Search page params: {
+  query: '',
+  category: 'implementation',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 100, offset: 0 }
+}
+MicroCMS Categories: [
+  { id: 'u--bp-qkr', name: '開発Tips', slug: 'tips' },
+  { id: '5_e15nldh5w', name: '業務効率化', slug: 'efficiency' },
+  { id: 'lbhh0sflrm', name: '技術調査', slug: 'research' },
+  { id: 'nzirm2xb2', name: '実装事例', slug: 'implementation' }
+]
+Category filter applied: category[equals]nzirm2xb2 for slug: implementation
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: {
+    orders: '-publishedAt',
+    limit: 12,
+    offset: 0,
+    filters: 'category[equals]nzirm2xb2'
+  }
+}
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+MicroCMS API result: {
+  totalCount: 3,
+  returnedCount: 3,
+  filters: 'category[equals]nzirm2xb2'
+}
+ GET /search?category=implementation 200 in 384ms
+Search page params: {
+  query: '',
+  category: 'research',
+  tags: undefined,
+  contentType: '',
+  targetAudience: '',
+  difficultyLevel: '',
+  page: 1
+}
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: { orders: '-publishedAt', limit: 100, offset: 0 }
+}
+MicroCMS API result: { totalCount: 7, returnedCount: 7, filters: undefined }
+MicroCMS Categories: [
+  { id: 'u--bp-qkr', name: '開発Tips', slug: 'tips' },
+  { id: '5_e15nldh5w', name: '業務効率化', slug: 'efficiency' },
+  { id: 'lbhh0sflrm', name: '技術調査', slug: 'research' },
+  { id: 'nzirm2xb2', name: '実装事例', slug: 'implementation' }
+]
+Category filter applied: category[equals]lbhh0sflrm for slug: research
+MicroCMS API call: {
+  endpoint: 'articles',
+  queries: {
+    orders: '-publishedAt',
+    limit: 12,
+    offset: 0,
+    filters: 'category[equals]lbhh0sflrm'
+  }
+}
+MicroCMS API result: {
+  totalCount: 1,
+  returnedCount: 1,
+  filters: 'category[equals]lbhh0sflrm'
+}
+ GET /search?category=research 200 in 555ms
+ ✓ Compiled in 390ms (753 modules)
+ ✓ Compiled in 356ms (753 modules)
+ ✓ Compiled in 214ms (753 modules)
+ GET /search?category=implementation 200 in 691ms
+ ✓ Compiled /_not-found in 409ms (744 modules)
+ GET /_next/static/css/app/layout.css?v=1753231843341 404 in 784ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1034ms (1072 modules)
+ GET /_next/static/chunks/app/search/page.js 404 in 1306ms
+ GET /_next/static/chunks/webpack.js?v=1753231843341 404 in 2425ms
+ GET /_next/static/chunks/main-app.js?v=1753231843341 404 in 2401ms
+ GET /_next/static/chunks/app/layout.js 404 in 2396ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 2395ms
+ GET /_next/static/chunks/app/error.js 404 in 2395ms
+ ✓ Compiled /favicon.ico in 274ms (661 modules)
+ GET /favicon.ico 200 in 476ms
+ GET /search?category=implementation 200 in 616ms
+ GET /_next/static/css/app/layout.css?v=1753231846932 404 in 235ms
+ GET /_next/static/chunks/app/layout.js 404 in 285ms
+ GET /_next/static/chunks/app/error.js 404 in 284ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 285ms
+ GET /_next/static/chunks/main-app.js?v=1753231846932 404 in 285ms
+ GET /_next/static/chunks/app/search/page.js 404 in 41ms
+ GET /search?category=implementation 200 in 271ms
+ GET /_next/static/css/app/layout.css?v=1753231848175 404 in 28ms
+ GET /_next/static/chunks/app/layout.js 404 in 130ms
+ GET /_next/static/chunks/app/error.js 404 in 130ms
+ GET /_next/static/chunks/main-app.js?v=1753231848175 404 in 130ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 130ms
+ GET /_next/static/chunks/app/search/page.js 404 in 24ms
+ GET /favicon.ico 200 in 3ms
+ GET /search?category=implementation 200 in 257ms
+ GET /search?category=implementation 200 in 47ms
+ GET /search?category=implementation 200 in 48ms
+ GET /search?category=implementation 200 in 50ms
+ GET /search?category=implementation 200 in 48ms
+ GET /_next/static/css/app/layout.css?v=1753231849752 404 in 33ms
+ GET /search?category=implementation 200 in 412ms
+ GET /_next/static/chunks/app/layout.js 404 in 172ms
+ GET /_next/static/chunks/main-app.js?v=1753231849752 404 in 171ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 166ms
+ GET /_next/static/chunks/app/error.js 404 in 54ms
+ GET /_next/static/chunks/app/search/page.js 404 in 52ms
+ GET /favicon.ico 200 in 2ms
+ ✓ Compiled in 824ms (437 modules)
+ ✓ Compiled in 192ms (437 modules)
+ ✓ Compiled in 399ms (437 modules)
+ ✓ Compiled in 154ms (437 modules)
+ ✓ Compiled in 223ms (437 modules)
+ ✓ Compiled in 241ms (437 modules)
+ ✓ Compiled in 158ms (437 modules)
+ ✓ Compiled in 215ms (437 modules)
+ ✓ Compiled in 163ms (437 modules)
+ ✓ Compiled in 159ms (437 modules)
+ ✓ Compiled in 200ms (437 modules)
+ ✓ Compiled in 127ms (437 modules)
+ ✓ Compiled in 168ms (437 modules)
+ ✓ Compiled in 1218ms (437 modules)
+ ✓ Compiled in 409ms (437 modules)
+ ✓ Compiled in 1118ms (437 modules)

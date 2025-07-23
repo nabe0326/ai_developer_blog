@@ -5,10 +5,9 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { List, ChevronRight, Copy, Check } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import CodeBlock from '@/components/ui/CodeBlock'
 
 interface ArticleContentClientProps {
   content: string
@@ -31,68 +30,19 @@ interface MarkdownProps {
   [key: string]: any
 }
 
-// コピー機能用のカスタムフック
-function useClipboard() {
-  const [copied, setCopied] = useState(false)
 
-  const copy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy text: ', err)
-    }
-  }
-
-  return { copied, copy }
-}
-
-// コードブロックコンポーネント
-function CodeBlock({ children, className, ...props }: MarkdownProps) {
-  const { copied, copy } = useClipboard()
+// マークダウン用コードブロックコンポーネント
+function MarkdownCodeBlock({ children, className, ...props }: MarkdownProps) {
   const match = /language-(\w+)/.exec(className || '')
   const language = match ? match[1] : 'text'
   const code = String(children).replace(/\n$/, '')
 
   return (
-    <div className="relative my-6 group">
-      <div className="absolute top-3 right-3 z-10">
-        <button
-          onClick={() => copy(code)}
-          className="p-2 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white transition-colors duration-200 opacity-0 group-hover:opacity-100"
-          title="コードをコピー"
-        >
-          {copied ? (
-            <Check className="w-4 h-4" />
-          ) : (
-            <Copy className="w-4 h-4" />
-          )}
-        </button>
-      </div>
-      <div className="rounded-lg overflow-hidden">
-        {language && language !== 'text' && (
-          <div className="bg-gray-800 px-4 py-2 text-gray-300 text-sm font-mono">
-            {language}
-          </div>
-        )}
-        <SyntaxHighlighter
-          language={language}
-          style={vscDarkPlus}
-          customStyle={{
-            margin: 0,
-            borderRadius: language && language !== 'text' ? '0 0 0.5rem 0.5rem' : '0.5rem',
-            fontSize: '14px',
-            lineHeight: '1.5',
-          }}
-          showLineNumbers={false}
-          wrapLines={true}
-          {...props}
-        >
-          {code}
-        </SyntaxHighlighter>
-      </div>
-    </div>
+    <CodeBlock
+      code={code}
+      language={language}
+      {...props}
+    />
   )
 }
 
@@ -100,9 +50,9 @@ function CodeBlock({ children, className, ...props }: MarkdownProps) {
 const components = {
   code: ({ inline, children, className, ...props }: MarkdownProps) => {
     return !inline ? (
-      <CodeBlock className={className} {...props}>
+      <MarkdownCodeBlock className={className} {...props}>
         {children}
-      </CodeBlock>
+      </MarkdownCodeBlock>
     ) : (
       <code className="bg-gray-100 text-gray-800 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
         {children}
@@ -264,14 +214,28 @@ function extractTocItemsFromHtml(content: string): TocItem[] {
 // HTMLコンテンツからコードブロックを抽出してReactコンポーネントで置き換える
 function HtmlContentWithSyntaxHighlighting({ content }: { content: string }) {
   const [processedContent, setProcessedContent] = useState<string>('')
-  const [codeBlocks, setCodeBlocks] = useState<{ id: string; code: string; language: string }[]>([])
+  const [codeBlocks, setCodeBlocks] = useState<{ id: string; code: string; language: string; filename?: string }[]>([])
 
   useEffect(() => {
     // コードブロックを抽出
-    const blocks: { id: string; code: string; language: string }[] = []
+    const blocks: { id: string; code: string; language: string; filename?: string }[] = []
     let processedHtml = content
 
-    // <pre><code>パターンを見つけて置き換え
+    // MicroCMSのファイル名付きコードブロックパターンを処理
+    processedHtml = processedHtml.replace(/<div data-filename="([^"]*)">\s*<pre>\s*<code class="language-(\w+)">([\s\S]*?)<\/code>\s*<\/pre>\s*<\/div>/gi, (match, filename, language, code) => {
+      const id = `code-block-${blocks.length}`
+      const decodedCode = code
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#x27;/g, "'")
+        .replace(/&amp;/g, '&')
+      
+      blocks.push({ id, code: decodedCode, language, filename })
+      return `<div data-code-block-id="${id}"></div>`
+    })
+
+    // 通常の<pre><code>パターンを見つけて置き換え
     processedHtml = processedHtml.replace(/<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/gi, (match, language, code) => {
       const id = `code-block-${blocks.length}`
       const decodedCode = code
@@ -305,7 +269,7 @@ function HtmlContentWithSyntaxHighlighting({ content }: { content: string }) {
 
   useEffect(() => {
     // コードブロックを動的に挿入
-    codeBlocks.forEach(({ id, code, language }) => {
+    codeBlocks.forEach(({ id, code, language, filename }) => {
       const element = document.querySelector(`[data-code-block-id="${id}"]`)
       if (element) {
         const codeBlockElement = document.createElement('div')
@@ -315,7 +279,7 @@ function HtmlContentWithSyntaxHighlighting({ content }: { content: string }) {
         // Reactコンポーネントとしてマウント
         import('react-dom/client').then(({ createRoot }) => {
           const root = createRoot(codeBlockElement)
-          root.render(<CodeBlockForHtml code={code} language={language} />)
+          root.render(<CodeBlockForHtml code={code} language={language} filename={filename} />)
         })
       }
     })
@@ -331,46 +295,13 @@ function HtmlContentWithSyntaxHighlighting({ content }: { content: string }) {
 }
 
 // HTML用のコードブロックコンポーネント
-function CodeBlockForHtml({ code, language }: { code: string; language: string }) {
-  const { copied, copy } = useClipboard()
-
+function CodeBlockForHtml({ code, language, filename }: { code: string; language: string; filename?: string }) {
   return (
-    <div className="relative my-6 group">
-      <div className="absolute top-3 right-3 z-10">
-        <button
-          onClick={() => copy(code)}
-          className="p-2 rounded-md bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white transition-colors duration-200 opacity-0 group-hover:opacity-100"
-          title="コードをコピー"
-        >
-          {copied ? (
-            <Check className="w-4 h-4" />
-          ) : (
-            <Copy className="w-4 h-4" />
-          )}
-        </button>
-      </div>
-      <div className="rounded-lg overflow-hidden">
-        {language && language !== 'text' && (
-          <div className="bg-gray-800 px-4 py-2 text-gray-300 text-sm font-mono">
-            {language}
-          </div>
-        )}
-        <SyntaxHighlighter
-          language={language}
-          style={vscDarkPlus}
-          customStyle={{
-            margin: 0,
-            borderRadius: language && language !== 'text' ? '0 0 0.5rem 0.5rem' : '0.5rem',
-            fontSize: '14px',
-            lineHeight: '1.5',
-          }}
-          showLineNumbers={false}
-          wrapLines={true}
-        >
-          {code}
-        </SyntaxHighlighter>
-      </div>
-    </div>
+    <CodeBlock
+      code={code}
+      language={language}
+      filename={filename}
+    />
   )
 }
 
@@ -408,7 +339,7 @@ function processHtmlContent(content: string): string {
 export default function ArticleContentClient({ content }: ArticleContentClientProps) {
   const [activeId, setActiveId] = useState<string>('')
   const [tocOpen, setTocOpen] = useState(false)
-  const [tocStyle, setTocStyle] = useState<{ position: string; top?: string; bottom?: string }>({ position: 'fixed' })
+  const [showAllTocItems, setShowAllTocItems] = useState(false)
   
   const isHtml = useMemo(() => isHtmlContent(content), [content])
   
@@ -436,47 +367,6 @@ export default function ArticleContentClient({ content }: ArticleContentClientPr
     return () => observer.disconnect()
   }, [content])
 
-  // 目次のスクロール位置制御
-  useEffect(() => {
-    const handleScroll = () => {
-      const articleContent = document.querySelector('[data-article-content]')
-      
-      if (!articleContent) return
-
-      const articleRect = articleContent.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      const tocHeight = 450 // 目次の概算高さ
-      
-      // 記事コンテナの下端が目次の高さ分より上にきたら停止
-      const articleBottomFromTop = articleRect.bottom
-      const shouldStick = articleBottomFromTop > (tocHeight + 100)
-
-      if (shouldStick) {
-        // 通常のfixed位置
-        setTocStyle({ position: 'fixed', top: '6rem' })
-      } else {
-        // 記事の終わりで止める - 記事コンテナの相対位置に切り替え
-        const scrollTop = window.pageYOffset
-        const articleTop = articleRect.top + scrollTop
-        const stopPosition = articleRect.bottom + scrollTop - tocHeight - 100
-        
-        setTocStyle({ 
-          position: 'absolute', 
-          top: `${Math.max(0, stopPosition - articleTop)}px`
-        })
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    // 初期読み込み時とリサイズ時にも実行
-    window.addEventListener('resize', handleScroll, { passive: true })
-    handleScroll()
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
-    }
-  }, [tocItems])
 
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id)
@@ -486,79 +376,204 @@ export default function ArticleContentClient({ content }: ArticleContentClientPr
     }
   }
 
+  // サイドバーに目次を追加する関数
+  useEffect(() => {
+    const sidebarContainer = document.getElementById('sidebar-toc-container')
+    if (sidebarContainer && tocItems.length > 0) {
+      sidebarContainer.innerHTML = ''
+      
+      const ul = document.createElement('ul')
+      ul.className = 'space-y-1'
+      
+      const itemsToShow = showAllTocItems ? tocItems : tocItems.slice(0, 10)
+      
+      itemsToShow.forEach((item) => {
+        const li = document.createElement('li')
+        const button = document.createElement('button')
+        
+        const indentClass = {
+          2: '',
+          3: 'ml-3',
+          4: 'ml-6',
+          5: 'ml-9',
+          6: 'ml-12'
+        }[item.level] || ''
+        
+        button.className = `w-full text-left text-sm py-2 px-3 rounded-md transition-all duration-200 hover:bg-accent-50 hover:text-accent-700 relative ${indentClass} ${
+          activeId === item.id 
+            ? 'text-accent-600 bg-accent-50 font-medium border-l-2 border-accent-500' 
+            : 'text-gray-700 hover:text-primary-900'
+        }`
+        
+        const span = document.createElement('span')
+        span.className = 'block leading-relaxed'
+        span.textContent = item.title
+        button.appendChild(span)
+        
+        button.onclick = () => scrollToHeading(item.id)
+        
+        li.appendChild(button)
+        ul.appendChild(li)
+      })
+      
+      if (!showAllTocItems && tocItems.length > 10) {
+        const li = document.createElement('li')
+        const button = document.createElement('button')
+        button.className = 'w-full text-center py-2 px-3 text-sm text-accent-600 hover:text-accent-700 font-medium transition-colors duration-200 border-t border-gray-200 mt-2 pt-3 rounded-md hover:bg-accent-50'
+        button.textContent = `もっと見る（+${tocItems.length - 10}項目）`
+        button.onclick = () => setShowAllTocItems(true)
+        li.appendChild(button)
+        ul.appendChild(li)
+      }
+      
+      sidebarContainer.appendChild(ul)
+    }
+  }, [tocItems, activeId, showAllTocItems])
+
   return (
     <div className="relative">
-      {/* 目次 - モバイル・タブレット */}
-      {tocItems.length > 0 && (
-        <div className="xl:hidden mb-8">
-          <button
-            onClick={() => setTocOpen(!tocOpen)}
-            className="flex items-center justify-between w-full p-4 bg-gradient-to-r from-accent-50 to-primary-50 rounded-xl border border-gray-200/50 text-left shadow-sm hover:shadow-md transition-all duration-300"
-          >
-            <span className="flex items-center text-base font-semibold text-primary-900">
-              <div className="w-2 h-2 bg-accent-500 rounded-full mr-3"></div>
-              目次を表示
-            </span>
-            <ChevronRight 
-              className={cn(
-                "w-5 h-5 text-accent-600 transition-transform duration-300",
-                tocOpen && "rotate-90"
-              )} 
-            />
-          </button>
-          
-          {tocOpen && (
-            <div className="mt-4 p-6 bg-white rounded-xl border border-gray-200/50 shadow-lg">
-              <nav>
-                <ul className="space-y-2">
-                  {tocItems.map((item, index) => (
-                    <li key={`${item.id}-${index}`}>
-                      <button
-                        onClick={() => scrollToHeading(item.id)}
-                        className={cn(
-                          'w-full text-left text-sm py-3 px-4 rounded-lg transition-all duration-300 hover:bg-accent-50 hover:text-accent-700 relative',
-                          item.level === 3 && 'ml-6',
-                          item.level === 4 && 'ml-12',
-                          item.level === 5 && 'ml-18',
-                          item.level === 6 && 'ml-24',
-                          activeId === item.id 
-                            ? 'text-accent-600 bg-accent-50 font-medium shadow-sm' 
-                            : 'text-gray-600 hover:text-primary-900'
+        {/* 目次 - モバイル・タブレット版 */}
+        {tocItems.length > 0 && (
+          <div className="mb-16 xl:hidden">
+              {/* モバイル・タブレット - 折りたたみ式 */}
+              <div>
+                <button
+                  onClick={() => setTocOpen(!tocOpen)}
+                  className="flex items-center justify-between w-full p-4 bg-gradient-to-r from-accent-50 to-primary-50 rounded-xl border border-gray-200/50 text-left shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <span className="flex items-center text-base font-semibold text-primary-900">
+                    <div className="w-2 h-2 bg-accent-500 rounded-full mr-3"></div>
+                    目次を表示
+                  </span>
+                  <ChevronRight 
+                    className={cn(
+                      "w-5 h-5 text-accent-600 transition-transform duration-300",
+                      tocOpen && "rotate-90"
+                    )} 
+                  />
+                </button>
+                
+                {tocOpen && (
+                  <div className="mt-4 p-6 bg-white rounded-xl border border-gray-200/50 shadow-lg">
+                    <nav>
+                      <ul className="space-y-2">
+                        {(showAllTocItems ? tocItems : tocItems.slice(0, 8)).map((item, index) => (
+                          <li key={`${item.id}-${index}`}>
+                            <button
+                              onClick={() => scrollToHeading(item.id)}
+                              className={cn(
+                                'w-full text-left text-sm py-3 px-4 rounded-lg transition-all duration-300 hover:bg-accent-50 hover:text-accent-700 relative',
+                                item.level === 3 && 'ml-6',
+                                item.level === 4 && 'ml-12',
+                                item.level === 5 && 'ml-18',
+                                item.level === 6 && 'ml-24',
+                                activeId === item.id 
+                                  ? 'text-accent-600 bg-accent-50 font-medium shadow-sm' 
+                                  : 'text-gray-600 hover:text-primary-900'
+                              )}
+                            >
+                              {activeId === item.id && (
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent-500 rounded-full"></div>
+                              )}
+                              <span className="block">{item.title}</span>
+                            </button>
+                          </li>
+                        ))}
+                        {tocItems.length > 8 && (
+                          <li>
+                            <button
+                              onClick={() => setShowAllTocItems(!showAllTocItems)}
+                              className="w-full text-center py-3 px-4 text-xs text-accent-600 hover:text-accent-700 font-medium transition-colors duration-200 border-t border-gray-100 mt-2 pt-4"
+                            >
+                              {showAllTocItems ? '簡潔表示' : `もっと見る（他 ${tocItems.length - 8} 項目）`}
+                            </button>
+                          </li>
                         )}
-                      >
-                        {activeId === item.id && (
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent-500 rounded-full"></div>
-                        )}
-                        <span className="block">{item.title}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-          )}
-        </div>
-      )}
+                      </ul>
+                    </nav>
+                  </div>
+                )}
+              </div>
 
-      {/* 記事本文 */}
-      <div className="prose max-w-none p-8 lg:p-12 leading-relaxed">
-        <div className="max-w-full">
-          {isHtml ? (
-            <HtmlContentWithSyntaxHighlighting content={content} />
-          ) : (
-            <ReactMarkdown
-              components={components}
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[
-                rehypeSlug,
-                [rehypeAutolinkHeadings, { behavior: 'wrap' }]
-              ]}
-            >
-              {content}
-            </ReactMarkdown>
-          )}
+              {/* デスクトップ - 常時表示（xl以下で非表示） */}
+              <div className="hidden lg:block xl:hidden">
+                <div className="p-6 bg-gradient-to-r from-accent-50 to-primary-50 rounded-xl border border-gray-200/50 shadow-sm">
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200/50">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-accent-500 rounded-full mr-3"></div>
+                      <h3 className="text-base font-bold text-primary-900">
+                        目次
+                      </h3>
+                    </div>
+                    {tocItems.length > 5 && (
+                      <button
+                        onClick={() => setShowAllTocItems(!showAllTocItems)}
+                        className="text-xs text-accent-600 hover:text-accent-700 font-medium transition-colors duration-200"
+                      >
+                        {showAllTocItems ? '簡潔表示' : 'もっと見る'}
+                      </button>
+                    )}
+                  </div>
+                  <nav>
+                    <ul className="space-y-1">
+                      {(showAllTocItems ? tocItems : tocItems.slice(0, 5)).map((item, index) => (
+                        <li key={`${item.id}-${index}`}>
+                          <button
+                            onClick={() => scrollToHeading(item.id)}
+                            className={cn(
+                              'w-full text-left text-sm py-2 px-3 rounded-lg transition-all duration-300 hover:bg-white hover:text-accent-700 relative',
+                              item.level === 3 && 'ml-4',
+                              item.level === 4 && 'ml-8',
+                              item.level === 5 && 'ml-12',
+                              item.level === 6 && 'ml-16',
+                              activeId === item.id 
+                                ? 'text-accent-600 bg-white font-medium shadow-sm' 
+                                : 'text-gray-700 hover:text-primary-900'
+                            )}
+                          >
+                            {activeId === item.id && (
+                              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-accent-500 rounded-full"></div>
+                            )}
+                            <span className="block truncate">{item.title}</span>
+                          </button>
+                        </li>
+                      ))}
+                      {!showAllTocItems && tocItems.length > 5 && (
+                        <li>
+                          <button
+                            onClick={() => setShowAllTocItems(true)}
+                            className="w-full text-center py-2 px-3 text-xs text-accent-600 hover:text-accent-700 font-medium transition-colors duration-200 border-t border-gray-100 mt-2 pt-3 rounded-lg hover:bg-accent-50"
+                          >
+                            もっと見る（{tocItems.length - 5}項目）
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+          </div>
+        )}
+
+        {/* 記事本文 */}
+        <div className="prose max-w-none p-6 md:p-8 lg:p-12 leading-relaxed">
+          <div className="max-w-full">
+            {isHtml ? (
+              <HtmlContentWithSyntaxHighlighting content={content} />
+            ) : (
+              <ReactMarkdown
+                components={components}
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[
+                  rehypeSlug,
+                  [rehypeAutolinkHeadings, { behavior: 'wrap' }]
+                ]}
+              >
+                {content}
+              </ReactMarkdown>
+            )}
+          </div>
         </div>
-      </div>
     </div>
   )
 }

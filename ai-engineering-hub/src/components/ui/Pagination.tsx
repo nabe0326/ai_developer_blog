@@ -26,7 +26,7 @@ function buildUrl(baseUrl: string, page: number, searchParams?: Record<string, s
   return url.pathname + url.search
 }
 
-export default function Pagination({ 
+export function Pagination({ 
   currentPage, 
   totalPages, 
   baseUrl, 

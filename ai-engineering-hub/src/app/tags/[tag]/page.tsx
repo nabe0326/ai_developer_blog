@@ -1,67 +1,57 @@
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeft, Tag } from 'lucide-react'
-import { articlesApi } from '@/lib/microcms'
-import { Article } from '@/types/microcms'
-import ArticleCard from '@/components/blog/ArticleCard'
-import Pagination from '@/components/ui/Pagination'
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowLeft, Tag } from 'lucide-react';
+import { getArticlesByTag } from '@/lib/microcms';
+import ArticleCard from '@/components/blog/ArticleCard';
+import { Pagination } from '@/components/ui/Pagination';
 
-interface TagPageProps {
-  params: Promise<{ tag: string }>
-  searchParams: Promise<{ page?: string }>
-}
+// 動的レンダリング（タグは無制限なのでSSGは使わない）
+export const dynamic = 'force-dynamic';
 
-async function getArticlesByTag(
-  tag: string,
-  page: number = 1,
-  limit: number = 12
-): Promise<{ articles: Article[]; totalCount: number }> {
-  try {
-    const offset = (page - 1) * limit
-    const response = await articlesApi.getList({
-      limit,
-      offset,
-      filters: `tags[contains]${decodeURIComponent(tag)}`,
-    })
-    
-    return {
-      articles: response.contents,
-      totalCount: response.totalCount,
-    }
-  } catch (error) {
-    console.error('Failed to fetch articles by tag:', error)
-    return { articles: [], totalCount: 0 }
-  }
-}
 
-export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
-  const { tag } = await params
-  const decodedTag = decodeURIComponent(tag)
 
+export async function generateMetadata(
+  { params }: { params: Promise<{ tag: string }> }
+): Promise<Metadata> {
+  const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
+  
   return {
-    title: `#${decodedTag} - AI Engineering Hub`,
-    description: `「${decodedTag}」タグの記事一覧です。AI技術の実践的な情報を発信しています。`,
+    title: `#${decodedTag} | AI Engineering Hub`,
+    description: `「${decodedTag}」タグが付いた記事一覧です。AI技術の実践的な情報を発信しています。`,
     openGraph: {
-      title: `#${decodedTag} - AI Engineering Hub`,
-      description: `「${decodedTag}」タグの記事一覧です。AI技術の実践的な情報を発信しています。`,
+      title: `#${decodedTag} | AI Engineering Hub`,
+      description: `「${decodedTag}」タグが付いた記事一覧です。`,
       type: 'website',
     },
-  }
+    twitter: {
+      card: 'summary',
+      title: `#${decodedTag} | AI Engineering Hub`,
+      description: `「${decodedTag}」タグが付いた記事一覧です。`,
+    },
+  };
 }
 
-export default async function TagPage({ params, searchParams }: TagPageProps) {
-  const { tag } = await params
-  const { page } = await searchParams
-  const currentPage = page ? parseInt(page, 10) : 1
-  const decodedTag = decodeURIComponent(tag)
+export default async function TagPage({ 
+  params, 
+  searchParams 
+}: {
+  params: Promise<{ tag: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { tag } = await params;
+  const { page } = await searchParams;
+  const currentPage = page ? parseInt(page, 10) : 1;
+  const decodedTag = decodeURIComponent(tag);
   
-  const { articles, totalCount } = await getArticlesByTag(tag, currentPage)
-  const totalPages = Math.ceil(totalCount / 12)
-
-  if (articles.length === 0 && currentPage === 1) {
-    notFound()
-  }
+  const response = await getArticlesByTag(decodedTag, { 
+    limit: 12, 
+    offset: (currentPage - 1) * 12 
+  });
+  
+  const articles = response.contents;
+  const totalCount = response.totalCount;
+  const totalPages = Math.ceil(totalCount / 12);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,6 +101,7 @@ export default async function TagPage({ params, searchParams }: TagPageProps) {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 baseUrl={`/tags/${tag}`}
+                searchParams={{}}
               />
             )}
           </>
