@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
-// ISR設定（1時間キャッシュ）
-export const revalidate = 3600;
+// ISR設定（5分キャッシュ + On-Demand Revalidation）
+export const revalidate = 300;
 
 // エラーハンドリング用のフォールバックコンポーネント
 function ArticleGridSkeleton() {
