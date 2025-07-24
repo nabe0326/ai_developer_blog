@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, Target, Users, Lightbulb, Mail, Github, Twitter } from 'lucide-react';
+import { ArrowRight, Target, Users, Lightbulb, Github, Twitter } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About - AI Engineering Hub',
@@ -141,39 +141,65 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Technology Stack Section */}
+      {/* Features Section */}
       <section className="py-16 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-primary-900 mb-4">
-              技術スタック
+              サイトの特徴
             </h2>
             <p className="text-lg text-gray-600">
-              このサイトは最新のWeb技術とAIツールを活用して構築されています。
+              効率的で価値ある情報提供を実現する、このサイトならではの特徴をご紹介します。
             </p>
           </div>
 
-          <div className="bg-gray-50 p-8 rounded-lg">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-bold text-primary-900 mb-4">フロントエンド</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• <span className="font-medium">Next.js 14</span> - React フレームワーク（App Router）</li>
-                  <li>• <span className="font-medium">TypeScript</span> - 型安全性とコード品質向上</li>
-                  <li>• <span className="font-medium">Tailwind CSS</span> - ユーティリティファーストCSS</li>
-                  <li>• <span className="font-medium">Lucide React</span> - アイコンライブラリ</li>
-                </ul>
-              </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold text-primary-900 mb-4">高品質なコンテンツ</h3>
+              <p className="text-gray-600 mb-4">
+                実際のプロジェクトで得られた経験と知見を基に、実践的で価値の高い記事を継続的に提供しています。
+              </p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li>• 実装時の課題と解決策を詳細に解説</li>
+                <li>• 企業導入における具体的な効果測定</li>
+                <li>• 最新技術の動向と将来性の分析</li>
+              </ul>
+            </div>
 
-              <div>
-                <h3 className="text-xl font-bold text-primary-900 mb-4">バックエンド・その他</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• <span className="font-medium">MicroCMS</span> - ヘッドレスCMS</li>
-                  <li>• <span className="font-medium">Vercel</span> - ホスティング・デプロイ</li>
-                  <li>• <span className="font-medium">Claude Desktop</span> - AI支援による記事作成</li>
-                  <li>• <span className="font-medium">MCP Server</span> - 自動投稿システム</li>
-                </ul>
-              </div>
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold text-primary-900 mb-4">効率的な記事制作</h3>
+              <p className="text-gray-600 mb-4">
+                先進的な制作プロセスにより、タイムリーで一貫性の高いコンテンツ配信を実現しています。
+              </p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li>• 毎日2-3記事の高頻度更新</li>
+                <li>• 統一されたフォーマットと品質基準</li>
+                <li>• 最新技術動向への迅速な対応</li>
+              </ul>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold text-primary-900 mb-4">読者に優しい設計</h3>
+              <p className="text-gray-600 mb-4">
+                エンジニアと企業の両方のニーズを考慮した、使いやすいサイト設計を心がけています。
+              </p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li>• カテゴリとタグによる効率的な記事検索</li>
+                <li>• 難易度別・対象者別の明確な分類</li>
+                <li>• モバイルファーストのレスポンシブデザイン</li>
+              </ul>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-xl font-bold text-primary-900 mb-4">コミュニティ重視</h3>
+              <p className="text-gray-600 mb-4">
+                単なる情報発信にとどまらず、AI技術者・企業担当者同士の学習と成長を支援します。
+              </p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li>• 実践者の生の声と経験談を重視</li>
+                <li>• 企業事例とエンジニア視点の両面から解説</li>
+                <li>• フィードバックと継続的な改善</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -190,18 +216,11 @@ export default function AboutPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-            <a 
-              href="mailto:contact@ai-engineering-hub.com"
-              className="inline-flex items-center px-6 py-3 bg-accent-500 text-white font-semibold rounded-lg hover:bg-accent-600 transition-colors duration-200 shadow-lg hover:shadow-xl"
-            >
-              <Mail className="mr-2 w-5 h-5" />
-              メールでお問い合わせ
-            </a>
             <a
               href="https://github.com/nabe0326"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              className="inline-flex items-center px-6 py-3 bg-accent-500 text-white font-semibold rounded-lg hover:bg-accent-600 transition-colors duration-200 shadow-lg hover:shadow-xl"
             >
               <Github className="mr-2 w-5 h-5" />
               GitHub
