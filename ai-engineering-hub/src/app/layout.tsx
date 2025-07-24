@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
     images: [
       {
-        url: '/ogp-image.png',
+        url: 'https://ai-developer-blog.vercel.app/ogp-image.png',
         width: 1200,
         height: 630,
         alt: 'AI Engineering Hub - 実践的AI技術情報',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     creator: '@ai_engineering_hub',
     images: [
       {
-        url: '/ogp-image.png',
+        url: 'https://ai-developer-blog.vercel.app/ogp-image.png',
         width: 1200,
         height: 630,
         alt: 'AI Engineering Hub - 実践的AI技術情報',
