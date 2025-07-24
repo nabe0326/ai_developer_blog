@@ -59,7 +59,7 @@ export async function generateMetadata(
   }
 
   const ogImage = article.featured_image?.url || getFallbackImageByCategory(article.category?.slug)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'
   const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
 
   return {
