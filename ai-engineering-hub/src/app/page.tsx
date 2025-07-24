@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app',
     siteName: 'AI Engineering Hub',
     title: 'AI Engineering Hub - 実践的AI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。Dify、Claude、GPT、プロンプトエンジニアリングなどの最新AI技術について解説します。',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'}${getFallbackImageForSite()}`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`,
         width: 1200,
         height: 630,
         alt: 'AI Engineering Hub - 実践的AI技術情報',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     creator: '@ai_engineering_hub',
     title: 'AI Engineering Hub - 実践的AI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-engineering-hub.vercel.app'}${getFallbackImageForSite()}`],
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`],
   },
   robots: {
     index: true,
