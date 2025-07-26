@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/react';
 import { WebsiteStructuredData } from "@/components/blog/WebsiteStructuredData";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -113,6 +114,7 @@ export default function RootLayout({
         </div>
         <Analytics />
         <GoogleAnalytics />
+        <ServiceWorkerRegistration />
       </body>
     </html>
   );

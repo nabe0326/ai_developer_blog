@@ -385,7 +385,7 @@ export const getArticlesByCategory = cache(async (categoryId: string, queries?: 
   }
 });
 
-// 関連記事取得
+// 関連記事取得（従来のシンプル版）
 export const getRelatedArticles = cache(async (categoryId: string, currentSlug: string, limit = 3): Promise<Article[]> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
@@ -404,12 +404,45 @@ export const getRelatedArticles = cache(async (categoryId: string, currentSlug: 
         filters: `category[equals]${categoryId}[and]slug[not_equals]${currentSlug}`,
         orders: '-publishedAt',
         limit,
-        fields: 'id,title,slug,excerpt,featured_image,publishedAt,category',
+        fields: 'id,title,slug,excerpt,featured_image,publishedAt,category,reading_time',
       },
     });
     return response.contents;
   } catch (error) {
     console.error(`Error fetching related articles for ${currentSlug}:`, error);
+    return [];
+  }
+});
+
+// 強化された関連記事取得（タグベース関連度スコア付き）
+export const getEnhancedRelatedArticles = cache(async (
+  targetArticle: Article, 
+  limit = 6
+): Promise<Article[]> => {
+  // 環境変数が設定されていない場合はモックデータを返す
+  if (!client) {
+    await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
+    // 関連度計算は後でclient側で実行
+    return mockArticles
+      .filter(article => article.slug !== targetArticle.slug)
+      .slice(0, limit);
+  }
+
+  try {
+    // より多くの候補記事を取得して関連度計算
+    const response = await client.get<ArticleResponse>({
+      endpoint: 'articles',
+      queries: {
+        filters: `slug[not_equals]${targetArticle.slug}`,
+        orders: '-publishedAt',
+        limit: Math.min(limit * 3, 50), // 関連度計算のために多めに取得
+        fields: 'id,title,slug,excerpt,featured_image,publishedAt,category,tags,contentType,targetAudience,difficultyLevel,reading_time',
+      },
+    });
+    
+    return response.contents;
+  } catch (error) {
+    console.error(`Error fetching enhanced related articles for ${targetArticle.slug}:`, error);
     return [];
   }
 });

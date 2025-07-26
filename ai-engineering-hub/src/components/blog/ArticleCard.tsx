@@ -1,12 +1,12 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Clock, Tag } from 'lucide-react'
 import { Article } from '@/types/microcms'
 import { microCMSUtils } from '@/lib/microcms'
 import { stringUtils, dateUtils } from '@/lib/utils'
 import ShareButtons from './ShareButtons'
+import ImageWithFallback from '@/components/ui/ImageWithFallback'
 
 interface ArticleCardProps {
   article: Article
@@ -53,17 +53,18 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
     : getFallbackImageByCategory(article.category?.slug)
 
   return (
-    <article className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg hover:border-accent-500/20 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="block">
+    <article className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg hover:border-accent-500/20 transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">
+      <div className="flex-1 flex flex-col">
         {/* Featured Image */}
         <Link href={`/articles/${article.slug}`} className="block">
           <div className="aspect-video relative overflow-hidden bg-gray-100">
-            <Image
+            <ImageWithFallback
               src={optimizedImageUrl}
               alt={article.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
               priority={priority}
+              categorySlug={article.category?.slug}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
             
@@ -86,7 +87,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
         </Link>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-6 flex-1 flex flex-col">
           {/* Category & Target Audience */}
           <div className="flex items-center justify-between mb-3">
             {article.category && (
@@ -105,13 +106,13 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
           </div>
 
           {/* Title */}
-          <Link href={`/articles/${article.slug}`} className="block">
+          <Link href={`/articles/${article.slug}`} className="block flex-1 flex flex-col">
             <h2 className="text-xl font-bold text-primary-900 mb-3 line-clamp-2 group-hover:text-accent-600 transition-colors duration-200">
               {article.title}
             </h2>
 
             {/* Excerpt */}
-            <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+            <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed flex-1">
               {stringUtils.truncate(article.excerpt, 120)}
             </p>
           </Link>
@@ -154,7 +155,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
           )}
 
           {/* Meta Info */}
-          <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100 mt-auto">
             <div className="flex items-center gap-4">
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-1" />
