@@ -6,6 +6,7 @@ import { Calendar, Clock, Tag } from 'lucide-react'
 import { Article } from '@/types/microcms'
 import { microCMSUtils } from '@/lib/microcms'
 import { stringUtils, dateUtils } from '@/lib/utils'
+import ShareButtons from './ShareButtons'
 
 interface ArticleCardProps {
   article: Article
@@ -154,16 +155,24 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
 
           {/* Meta Info */}
           <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
-            <div className="flex items-center">
-              <Calendar className="w-4 h-4 mr-1" />
-              <time dateTime={article.publishedAt}>
-                {dateUtils.formatDate(article.publishedAt)}
-              </time>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 mr-1" />
+                <time dateTime={article.publishedAt}>
+                  {dateUtils.formatDate(article.publishedAt)}
+                </time>
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 mr-1" />
+                <span>{article.reading_time}分</span>
+              </div>
             </div>
-            <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1" />
-              <span>{article.reading_time}分</span>
-            </div>
+            <ShareButtons
+              url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}/articles/${article.slug}`}
+              title={article.title}
+              description={article.excerpt}
+              compact={true}
+            />
           </div>
         </div>
       </div>

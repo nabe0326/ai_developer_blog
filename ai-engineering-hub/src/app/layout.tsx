@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/react';
 import { WebsiteStructuredData } from "@/components/blog/WebsiteStructuredData";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -97,6 +98,8 @@ export default function RootLayout({
     <html lang="ja">
       <head>
         <WebsiteStructuredData />
+        <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml" />
+        <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/atom.xml" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-primary-700`}
@@ -109,6 +112,7 @@ export default function RootLayout({
           <Footer />
         </div>
         <Analytics />
+        <GoogleAnalytics />
       </body>
     </html>
   );

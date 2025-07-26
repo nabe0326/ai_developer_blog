@@ -7,6 +7,7 @@ import { getArticleWithErrorHandling, getAllArticles } from '@/lib/microcms';
 import ArticleContent from '@/components/blog/ArticleContent';
 import { ArticleStructuredData } from '@/components/blog/StructuredData';
 import { BreadcrumbStructuredData } from '@/components/blog/BreadcrumbStructuredData';
+import ShareButtons from '@/components/blog/ShareButtons';
 import dynamic from 'next/dynamic';
 
 // 関連記事コンポーネント
@@ -274,6 +275,15 @@ export default async function ArticlePage({
             <div className="flex-1 xl:max-w-4xl min-w-0">
               <div className="bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
                 <ArticleContent content={article.content} />
+              </div>
+              
+              {/* Share Buttons after article content */}
+              <div className="mt-8">
+                <ShareButtons
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}/articles/${article.slug}`}
+                  title={article.title}
+                  description={article.excerpt}
+                />
               </div>
             </div>
 
