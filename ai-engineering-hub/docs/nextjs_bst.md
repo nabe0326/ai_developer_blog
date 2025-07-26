@@ -500,7 +500,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
-    url: 'https://ai-engineering-hub.com',
+    url: 'https://ai-developer-blog.vercel.app',
     siteName: 'AI Engineering Hub',
   },
   twitter: {
@@ -539,12 +539,12 @@ export function ArticleStructuredData({ article }: ArticleStructuredDataProps) {
       name: 'AI Engineering Hub',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ai-engineering-hub.com/logo.png',
+        url: 'https://ai-developer-blog.vercel.app/logo.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://ai-engineering-hub.com/articles/${article.slug}`,
+      '@id': `https://ai-developer-blog.vercel.app/articles/${article.slug}`,
     },
   };
 
@@ -569,14 +569,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categories = await getCategories();
 
   const articleUrls = articles.map(article => ({
-    url: `https://ai-engineering-hub.com/articles/${article.slug}`,
+    url: `https://ai-developer-blog.vercel.app/articles/${article.slug}`,
     lastModified: new Date(article.updatedAt),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
   const categoryUrls = categories.contents.map(category => ({
-    url: `https://ai-engineering-hub.com/categories/${category.slug}`,
+    url: `https://ai-developer-blog.vercel.app/categories/${category.slug}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
     priority: 0.6,
@@ -584,13 +584,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: 'https://ai-engineering-hub.com',
+      url: 'https://ai-developer-blog.vercel.app',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://ai-engineering-hub.com/articles',
+      url: 'https://ai-developer-blog.vercel.app/articles',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,

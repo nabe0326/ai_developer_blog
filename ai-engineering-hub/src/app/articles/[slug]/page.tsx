@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, Clock, Tag, User } from 'lucide-react';
 import { getArticleWithErrorHandling, getAllArticles } from '@/lib/microcms';
 import ArticleContent from '@/components/blog/ArticleContent';
 import { ArticleStructuredData } from '@/components/blog/StructuredData';
+import { BreadcrumbStructuredData } from '@/components/blog/BreadcrumbStructuredData';
 import dynamic from 'next/dynamic';
 
 // 関連記事コンポーネント
@@ -63,12 +64,12 @@ export async function generateMetadata(
   const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
 
   return {
-    title: `${article.title} | AI Engineering Hub`,
+    title: article.title,
     description: article.excerpt,
     keywords: article.tags ? (Array.isArray(article.tags) ? article.tags.join(', ') : article.tags) : undefined,
-    authors: [{ name: 'AI Engineering Hub' }],
-    creator: 'AI Engineering Hub',
-    publisher: 'AI Engineering Hub',
+    authors: [{ name: '実践AI技術ブログ' }],
+    creator: '実践AI技術ブログ',
+    publisher: '実践AI技術ブログ',
     formatDetection: {
       email: false,
       address: false,
@@ -81,7 +82,7 @@ export async function generateMetadata(
       url: `${siteUrl}/articles/${article.slug}`,
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
-      authors: ['AI Engineering Hub'],
+      authors: ['実践AI技術ブログ'],
       tags: article.tags ? (Array.isArray(article.tags) ? article.tags : article.tags.split(',').map(tag => tag.trim())) : undefined,
       images: [
         {
@@ -91,13 +92,13 @@ export async function generateMetadata(
           alt: article.title,
         }
       ],
-      siteName: 'AI Engineering Hub',
+      siteName: '実践AI技術ブログ',
       locale: 'ja_JP',
     },
     twitter: {
       card: 'summary_large_image',
-      site: '@ai_engineering_hub',
-      creator: '@ai_engineering_hub',
+      site: '@practical_ai_tech',
+      creator: '@practical_ai_tech',
       title: article.title,
       description: article.excerpt,
       images: [absoluteOgImage],
@@ -164,9 +165,17 @@ export default async function ArticlePage({
     notFound();
   }
 
+  const breadcrumbItems = [
+    { name: 'ホーム', url: 'https://ai-developer-blog.vercel.app' },
+    { name: '記事一覧', url: 'https://ai-developer-blog.vercel.app/articles' },
+    ...(article.category ? [{ name: article.category.name, url: `https://ai-developer-blog.vercel.app/categories/${article.category.slug}` }] : []),
+    { name: article.title, url: `https://ai-developer-blog.vercel.app/articles/${article.slug}` },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <ArticleStructuredData article={article} />
+      <BreadcrumbStructuredData items={breadcrumbItems} />
       
       {/* Back Navigation */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-30">
@@ -232,7 +241,7 @@ export default async function ArticlePage({
             )}
             <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
               <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
-              <span className="font-medium">AI Engineering Hub</span>
+              <span className="font-medium">実践AI技術ブログ</span>
             </div>
           </div>
 

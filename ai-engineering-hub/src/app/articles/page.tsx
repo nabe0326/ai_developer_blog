@@ -7,7 +7,7 @@ import ArticleCard from '@/components/blog/ArticleCard'
 import { Pagination } from '@/components/ui/Pagination'
 
 export const metadata: Metadata = {
-  title: '記事一覧 - AI Engineering Hub',
+  title: '記事一覧',
   description: 'AI技術に関する実践的な記事の一覧です。開発事例、技術調査、チュートリアルなど様々な情報を提供しています。',
 }
 

@@ -57,7 +57,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="!text-white font-bold text-xl hover:text-gray-100 transition-colors">
-              AI Engineering Hub
+              実践AI技術ブログ
             </Link>
           </div>
 
