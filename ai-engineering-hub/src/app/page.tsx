@@ -59,9 +59,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: process.env.GOOGLE_VERIFICATION,
-  },
 };
 
 // キャッシュなし（常に最新データを取得）
