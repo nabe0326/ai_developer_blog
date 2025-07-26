@@ -115,9 +115,6 @@ export async function generateMetadata(
         'max-snippet': -1,
       },
     },
-    verification: {
-      google: process.env.GOOGLE_VERIFICATION,
-    },
   };
 }
 
