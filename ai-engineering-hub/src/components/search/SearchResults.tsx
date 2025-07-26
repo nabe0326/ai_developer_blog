@@ -1,6 +1,7 @@
 import { Article } from '@/types/microcms';
 import ArticleCard from '@/components/blog/ArticleCard';
 import { Pagination } from '@/components/ui/Pagination';
+import NoSearchResults from '@/components/search/NoSearchResults';
 
 interface SearchResultsProps {
   articles: Article[];
@@ -20,12 +21,7 @@ export function SearchResults({
   const totalPages = Math.ceil(totalCount / 12);
 
   if (articles.length === 0) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-bold mb-4">記事が見つかりませんでした</h2>
-        <p className="text-gray-600">検索条件を変更してお試しください。</p>
-      </div>
-    );
+    return <NoSearchResults query={query} category={category} />;
   }
 
   return (

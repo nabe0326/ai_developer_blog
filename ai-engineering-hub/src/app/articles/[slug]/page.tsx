@@ -1,22 +1,12 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Suspense } from 'react';
 import { ArrowLeft, Calendar, Clock, Tag, User } from 'lucide-react';
 import { getArticleWithErrorHandling, getAllArticles } from '@/lib/microcms';
 import ArticleContent from '@/components/blog/ArticleContent';
 import { ArticleStructuredData } from '@/components/blog/StructuredData';
 import { BreadcrumbStructuredData } from '@/components/blog/BreadcrumbStructuredData';
-import ShareButtons from '@/components/blog/ShareButtons';
-import dynamic from 'next/dynamic';
-
-// 関連記事コンポーネント
-const RelatedArticles = dynamic(
-  () => import('@/components/blog/RelatedArticles').catch(() => ({ default: () => null })),
-  {
-    loading: () => <div>関連記事を読み込み中...</div>,
-  }
-);
+import ArticleFooterSection from '@/components/blog/ArticleFooterSection';
 
 
 // 静的パス生成
@@ -224,7 +214,7 @@ export default async function ArticlePage({
             </div>
             <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
               <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-accent-600" />
-              <span>{article.reading_time}分で読める</span>
+              <span>{article.reading_time || 5}分で読める</span>
             </div>
             {article.category && (
               <div className="flex items-center bg-gray-50 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
@@ -276,15 +266,6 @@ export default async function ArticlePage({
               <div className="bg-white/70 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden" data-article-content>
                 <ArticleContent content={article.content} />
               </div>
-              
-              {/* Share Buttons after article content */}
-              <div className="mt-8">
-                <ShareButtons
-                  url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}/articles/${article.slug}`}
-                  title={article.title}
-                  description={article.excerpt}
-                />
-              </div>
             </div>
 
             {/* Right Sidebar - TOC */}
@@ -309,10 +290,11 @@ export default async function ArticlePage({
         </div>
       </article>
 
-      {/* 関連記事（Suspense使用） */}
-      <Suspense fallback={<div className="max-w-6xl mx-auto px-4 py-16 text-center">関連記事を読み込み中...</div>}>
-        <RelatedArticles categoryId={article.category?.id} currentSlug={article.slug} />
-      </Suspense>
+      {/* Article Footer Section with Enhanced Related Articles */}
+      <ArticleFooterSection 
+        article={article}
+        siteUrl={process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}
+      />
     </div>
   )
 }
