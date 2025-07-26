@@ -12,12 +12,12 @@ const getFallbackImageForSite = () => {
 }
 
 export const metadata: Metadata = {
-  title: 'AI Engineering Hub - 実践的AI技術情報',
+  title: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
   description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。Dify、Claude、GPT、プロンプトエンジニアリングなどの最新AI技術について解説します。',
   keywords: ['AI', '人工知能', 'Claude', 'GPT', 'Dify', 'プロンプトエンジニアリング', 'AI開発', '機械学習', 'エンジニア'],
-  authors: [{ name: 'AI Engineering Hub' }],
-  creator: 'AI Engineering Hub',
-  publisher: 'AI Engineering Hub',
+  authors: [{ name: '実践AI技術ブログ' }],
+  creator: '実践AI技術ブログ',
+  publisher: '実践AI技術ブログ',
   formatDetection: {
     email: false,
     address: false,
@@ -27,23 +27,23 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ja_JP',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app',
-    siteName: 'AI Engineering Hub',
-    title: 'AI Engineering Hub - 実践的AI技術情報',
+    siteName: '実践AI技術ブログ',
+    title: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。Dify、Claude、GPT、プロンプトエンジニアリングなどの最新AI技術について解説します。',
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`,
         width: 1200,
         height: 630,
-        alt: 'AI Engineering Hub - 実践的AI技術情報',
+        alt: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@ai_engineering_hub',
-    creator: '@ai_engineering_hub',
-    title: 'AI Engineering Hub - 実践的AI技術情報',
+    site: '@practical_ai_tech',
+    creator: '@practical_ai_tech',
+    title: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
     images: [`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`],
   },

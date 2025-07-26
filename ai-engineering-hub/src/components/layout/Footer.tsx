@@ -43,10 +43,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Site Info */}
           <div className="lg:col-span-1">
-            <h3 className="text-lg font-bold mb-4">AI Engineering Hub</h3>
+            <h3 className="text-lg font-bold mb-4">実践AI技術ブログ</h3>
             <p className="text-gray-300 mb-4 max-w-md">
-              AI技術の実践的情報を発信するブログサイト。
-              エンジニア・企業向けに最新のAI開発事例、ツール、ノウハウを提供します。
+              エンジニアと企業向けのAI技術情報。
+              開発事例、ツール比較、導入ノウハウから最新トレンドまで実践的な情報を発信。
             </p>
             
             {/* Social Links */}
@@ -111,7 +111,7 @@ export default function Footer() {
         <div className="border-t border-gray-700 mt-8 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              &copy; {currentYear} AI Engineering Hub. All rights reserved.
+              &copy; {currentYear} 実践AI技術ブログ. All rights reserved.
             </p>
             <p className="text-gray-400 text-sm mt-2 sm:mt-0">
               Built with Next.js & MicroCMS

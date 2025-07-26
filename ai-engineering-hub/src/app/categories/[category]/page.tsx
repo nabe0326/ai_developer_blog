@@ -32,16 +32,16 @@ export async function generateMetadata(
   }
 
   return {
-    title: `${category.name} | AI Engineering Hub`,
+    title: category.name,
     description: `${category.name}に関する記事一覧です。AI技術の実践的な情報を発信しています。`,
     openGraph: {
-      title: `${category.name} | AI Engineering Hub`,
+      title: category.name,
       description: `${category.name}に関する記事一覧です。`,
       type: 'website',
     },
     twitter: {
       card: 'summary',
-      title: `${category.name} | AI Engineering Hub`,
+      title: category.name,
       description: `${category.name}に関する記事一覧です。`,
     },
   };

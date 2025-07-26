@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { ArrowRight, Target, Users, Lightbulb, Github, Twitter } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About - AI Engineering Hub',
-  description: 'AI Engineering Hubについて。AI技術の実践的情報を発信し、エンジニアと企業の成長を支援するブログサイトです。',
+  title: 'About',
+  description: '実践AI技術ブログについて。AI技術の実践的情報を発信し、エンジニアと企業の成長を支援するブログサイトです。',
   keywords: ['AI', '人工知能', 'Claude', 'GPT', 'プロンプトエンジニアリング', 'AI開発', 'MCP'],
   openGraph: {
-    title: 'About - AI Engineering Hub',
-    description: 'AI Engineering Hubについて。AI技術の実践的情報を発信し、エンジニアと企業の成長を支援するブログサイトです。',
+    title: 'About',
+    description: '実践AI技術ブログについて。AI技術の実践的情報を発信し、エンジニアと企業の成長を支援するブログサイトです。',
     type: 'website',
   },
 };
