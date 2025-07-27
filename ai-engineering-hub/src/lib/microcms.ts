@@ -40,12 +40,15 @@ export const getArticles = async (queries?: MicroCMSQueries): Promise<ArticleRes
     // featured_imageフィールドを明示的に指定
     const defaultFields = 'id,title,slug,content,excerpt,category,tags,featured_image,content_type,target_audience,difficulty_level,reading_time,publishedAt,updatedAt,createdAt,revisedAt';
     
+    const now = new Date().toISOString();
+    
     return await client.get({
       endpoint: 'articles',
       queries: {
         orders: '-publishedAt',
         limit: 12,
         fields: queries?.fields || defaultFields,
+        filters: `publishedAt[less_than]${now}`,
         ...queries,
       },
     });
