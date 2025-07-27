@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   },
 }
 
+// キャッシュを無効化してリアルタイム更新を実現
+export const dynamic = 'force-dynamic';
+
 async function getCategoriesWithCounts(): Promise<(Category & { articleCount: number })[]> {
   try {
     // カテゴリ一覧を取得

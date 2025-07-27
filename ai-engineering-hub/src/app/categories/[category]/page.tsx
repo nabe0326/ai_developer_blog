@@ -16,8 +16,8 @@ export async function generateStaticParams() {
   }));
 }
 
-// ISR設定（30分間キャッシュ）
-export const revalidate = 1800;
+// キャッシュを無効化してリアルタイム更新を実現
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ category: string }> }
