@@ -18,8 +18,8 @@ export async function generateStaticParams() {
   }));
 }
 
-// ISR設定（10分間キャッシュ）
-export const revalidate = 600;
+// キャッシュを無効化してリアルタイム更新を実現
+export const dynamic = 'force-dynamic';
 
 const getFallbackImageByCategory = (categorySlug?: string) => {
   const categoryImageMap: Record<string, string> = {

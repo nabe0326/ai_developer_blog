@@ -6,7 +6,7 @@ import {
   MicroCMSQueries 
 } from '@/types/microcms';
 import { createClient } from 'microcms-js-sdk';
-import { cache } from 'react';
+// import { cache } from 'react'; // キャッシュを無効化してリアルタイム更新を実現
 import { notFound } from 'next/navigation';
 import { 
   mockArticles, 
@@ -28,8 +28,8 @@ const client = serviceDomain && apiKey ? createClient({
   apiKey,
 }) : null;
 
-// React Cache APIを使用してサーバーサイドでキャッシュ
-export const getArticles = cache(async (queries?: MicroCMSQueries): Promise<ArticleResponse> => {
+// キャッシュ無効化でリアルタイム更新を実現
+export const getArticles = async (queries?: MicroCMSQueries): Promise<ArticleResponse> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -53,9 +53,9 @@ export const getArticles = cache(async (queries?: MicroCMSQueries): Promise<Arti
     console.error('Error fetching articles:', error);
     throw error;
   }
-});
+};
 
-export const getArticle = cache(async (slug: string): Promise<Article | null> => {
+export const getArticle = async (slug: string): Promise<Article | null> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -75,9 +75,9 @@ export const getArticle = cache(async (slug: string): Promise<Article | null> =>
     console.error(`Error fetching article ${slug}:`, error);
     return null;
   }
-});
+};
 
-export const getCategories = cache(async (): Promise<CategoryResponse> => {
+export const getCategories = async (): Promise<CategoryResponse> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -94,9 +94,9 @@ export const getCategories = cache(async (): Promise<CategoryResponse> => {
     console.error('Error fetching categories:', error);
     throw error;
   }
-});
+};
 
-export const getCategory = cache(async (slug: string): Promise<Category | null> => {
+export const getCategory = async (slug: string): Promise<Category | null> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -116,7 +116,7 @@ export const getCategory = cache(async (slug: string): Promise<Category | null> 
     console.error(`Error fetching category ${slug}:`, error);
     return null;
   }
-});
+};
 
 // 検索機能（サーバーサイドのみ）
 export const searchArticles = async ({
@@ -261,7 +261,7 @@ export const searchArticles = async ({
 };
 
 // 全記事取得（サイトマップ用）
-export const getAllArticles = cache(async ({ limit = 100 } = {}): Promise<Article[]> => {
+export const getAllArticles = async ({ limit = 100 } = {}): Promise<Article[]> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -302,7 +302,7 @@ export const getAllArticles = cache(async ({ limit = 100 } = {}): Promise<Articl
     console.error('Error fetching all articles:', error);
     throw error;
   }
-});
+};
 
 // エラーハンドリング付きの記事取得
 export async function getArticleWithErrorHandling(slug: string): Promise<Article> {
@@ -314,7 +314,7 @@ export async function getArticleWithErrorHandling(slug: string): Promise<Article
 }
 
 // タグ検索
-export const getArticlesByTag = cache(async (tag: string, queries?: MicroCMSQueries): Promise<ArticleResponse> => {
+export const getArticlesByTag = async (tag: string, queries?: MicroCMSQueries): Promise<ArticleResponse> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -347,10 +347,10 @@ export const getArticlesByTag = cache(async (tag: string, queries?: MicroCMSQuer
     console.error(`Error fetching articles by tag ${tag}:`, error);
     throw error;
   }
-});
+};
 
 // カテゴリ別記事取得
-export const getArticlesByCategory = cache(async (categoryId: string, queries?: MicroCMSQueries): Promise<ArticleResponse> => {
+export const getArticlesByCategory = async (categoryId: string, queries?: MicroCMSQueries): Promise<ArticleResponse> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -383,10 +383,10 @@ export const getArticlesByCategory = cache(async (categoryId: string, queries?: 
     console.error(`Error fetching articles by category ${categoryId}:`, error);
     throw error;
   }
-});
+};
 
 // 関連記事取得（従来のシンプル版）
-export const getRelatedArticles = cache(async (categoryId: string, currentSlug: string, limit = 3): Promise<Article[]> => {
+export const getRelatedArticles = async (categoryId: string, currentSlug: string, limit = 3): Promise<Article[]> => {
   // 環境変数が設定されていない場合はモックデータを返す
   if (!client) {
     await new Promise(resolve => setTimeout(resolve, 100)); // API呼び出しを模擬
@@ -412,10 +412,10 @@ export const getRelatedArticles = cache(async (categoryId: string, currentSlug: 
     console.error(`Error fetching related articles for ${currentSlug}:`, error);
     return [];
   }
-});
+};
 
 // 強化された関連記事取得（タグベース関連度スコア付き）
-export const getEnhancedRelatedArticles = cache(async (
+export const getEnhancedRelatedArticles = async (
   targetArticle: Article, 
   limit = 6
 ): Promise<Article[]> => {
@@ -445,7 +445,7 @@ export const getEnhancedRelatedArticles = cache(async (
     console.error(`Error fetching enhanced related articles for ${targetArticle.slug}:`, error);
     return [];
   }
-});
+};
 
 // ユーティリティ関数
 export const microCMSUtils = {

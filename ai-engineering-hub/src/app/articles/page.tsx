@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: 'AI技術に関する実践的な記事の一覧です。開発事例、技術調査、チュートリアルなど様々な情報を提供しています。',
 }
 
+// キャッシュを無効化してリアルタイム更新を実現
+export const dynamic = 'force-dynamic';
+
 function ArticleGridSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
