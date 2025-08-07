@@ -1,8 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllArticles, getCategories } from '@/lib/microcms';
 
-// サイトマップのリアルタイム更新を実現
-export const dynamic = 'force-dynamic';
+// サイトマップの安定配信（CDNキャッシュ）
 export const revalidate = 3600; // 1時間ごとに再生成
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
