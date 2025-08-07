@@ -1,40 +1,67 @@
 import { MetadataRoute } from 'next';
 import { getAllArticles, getCategories } from '@/lib/microcms';
 
+// サイトマップのリアルタイム更新を実現
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // 1時間ごとに再生成
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const articles = await getAllArticles({ limit: 100 });
-  const categories = await getCategories();
-  
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
+  try {
+    const articles = await getAllArticles({ limit: 100 });
+    const categories = await getCategories();
+    
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
 
-  const articleUrls = articles.map(article => ({
-    url: `${baseUrl}/articles/${article.slug}`,
-    lastModified: new Date(article.updatedAt),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+    console.log(`Sitemap generation: ${articles.length} articles, ${categories.contents.length} categories`);
 
-  const categoryUrls = categories.contents.map(category => ({
-    url: `${baseUrl}/categories/${category.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'daily' as const,
-    priority: 0.6,
-  }));
+    const articleUrls = articles.map(article => ({
+      url: `${baseUrl}/articles/${article.slug}`,
+      lastModified: new Date(article.updatedAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
 
-  return [
-    {
-      url: baseUrl,
+    const categoryUrls = categories.contents.map(category => ({
+      url: `${baseUrl}/categories/${category.slug}`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/articles`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-    ...articleUrls,
-    ...categoryUrls,
-  ];
+      changeFrequency: 'daily' as const,
+      priority: 0.6,
+    }));
+
+    return [
+      {
+        url: baseUrl,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/articles`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      },
+      ...articleUrls,
+      ...categoryUrls,
+    ];
+  } catch (error) {
+    console.error('Sitemap generation error:', error);
+    
+    // エラー時はベース構造のみ返す
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
+    return [
+      {
+        url: baseUrl,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/articles`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      },
+    ];
+  }
 }
