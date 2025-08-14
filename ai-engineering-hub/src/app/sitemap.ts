@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getAllArticles, getCategories } from '@/lib/microcms';
 
-// サイトマップの安定配信（CDNキャッシュ）
-export const revalidate = 3600; // 1時間ごとに再生成
+// Google Search Console登録の安定性を向上
+export const revalidate = 86400; // 24時間ごとに再生成（より安定したキャッシュ）
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const articleUrls = articles.map(article => ({
       url: `${baseUrl}/articles/${article.slug}`,
-      lastModified: new Date(article.updatedAt),
+      lastModified: new Date(article.updatedAt || article.publishedAt),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     }));

@@ -18,8 +18,8 @@ export async function generateStaticParams() {
   }));
 }
 
-// キャッシュを無効化してリアルタイム更新を実現
-export const dynamic = 'force-dynamic';
+// 静的生成を有効化して SEO を改善
+export const revalidate = 3600; // 1時間ごとに再検証
 
 const getFallbackImageByCategory = (categorySlug?: string) => {
   const categoryImageMap: Record<string, string> = {

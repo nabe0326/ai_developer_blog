@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # AI Engineering Hub - プロジェクト概要とClaude協働ガイド
 
 ## プロジェクト概要
@@ -107,16 +111,23 @@ MICROCMS_API_KEY=your-api-key
 NEXT_PUBLIC_SITE_URL=https://ai-developer-blog.vercel.app
 ```
 
-## 開発コマンド
+## Development Commands
+
 ```bash
-# 開発サーバー起動
+# Development server
 npm run dev
 
-# 本番ビルド
+# Production build
 npm run build
 
-# 本番サーバー起動  
+# Production server
 npm run start
+
+# Linting (Next.js built-in ESLint)
+npx next lint
+
+# Type checking
+npx tsc --noEmit
 ```
 
 ## 現在のデプロイ状況
@@ -139,84 +150,101 @@ npm run start
 - 型定義は `src/types/microcms.ts` を基準とする
 - コンポーネントは既存パターンを踏襲
 
-## テスト・確認方法
-```bash
-# ローカル開発時の確認
-npm run dev
+## Architecture Overview
 
-# 本番ビルド確認
-npm run build
+**Core Technologies:**
+- **Frontend**: Next.js 14 with App Router
+- **Language**: TypeScript with strict mode enabled
+- **Styling**: Tailwind CSS v4.x
+- **CMS**: MicroCMS (production integrated)
+- **Deployment**: Vercel with auto-deployment
+- **Analytics**: Google Analytics 4 + Vercel Analytics
+
+**Key Architecture Decisions:**
+- Uses MicroCMS SDK for content management - **NEVER use mock data in production**
+- All routes use App Router pattern (`src/app/`)
+- Comprehensive SEO setup with structured data, sitemaps, and feeds
+- Optimized images with WebP/AVIF support for MicroCMS assets
+- RSS/Atom feeds for content distribution
+
+## Key File Locations
+
+**Core API Integration:**
+- `src/lib/microcms.ts` - MicroCMS client and data fetching functions
+- `src/types/microcms.ts` - TypeScript interfaces for CMS data structures
+- `src/lib/utils.ts` - Utility functions and helpers
+
+**Main Pages:**
+- `src/app/page.tsx` - Homepage with featured articles
+- `src/app/articles/[slug]/page.tsx` - Article detail pages
+- `src/app/articles/page.tsx` - Articles listing
+- `src/app/categories/[category]/page.tsx` - Category pages
+- `src/app/search/page.tsx` - Search functionality
+
+**Components:**
+- `src/components/layout/Header.tsx` & `Footer.tsx` - Site layout
+- `src/components/blog/ArticleCard.tsx` - Article preview cards
+- `src/components/blog/ArticleContent.tsx` - Main article content display
+- `src/components/blog/ShareButtons.tsx` - Social sharing
+- `src/components/search/SearchBar.tsx` - Search interface
+
+**SEO & Feeds:**
+- `src/app/sitemap.ts` - Dynamic sitemap generation
+- `src/app/feed.xml/route.ts` - RSS feed
+- `src/app/atom.xml/route.ts` - Atom feed
+
+## Code Patterns and Conventions
+
+**Data Fetching:**
+- Use functions from `src/lib/microcms.ts` for all CMS operations
+- Functions include error handling and fallbacks to mock data when env vars missing
+- Most functions are already cached appropriately for production performance
+
+**Component Structure:**
+- Follow existing component patterns in `src/components/`
+- Use TypeScript interfaces from `src/types/microcms.ts`
+- Maintain responsive design with Tailwind CSS utilities
+
+**Routing:**
+- All pages use App Router conventions
+- Dynamic routes: `[slug]`, `[category]`, `[tag]`
+- API routes for feeds and revalidation in `src/app/api/`
+
+**SEO Implementation:**
+- Each page defines its own metadata export
+- Structured data components in `src/components/blog/`
+- Automatic sitemap generation with `src/app/sitemap.ts`
+
+## Current Priority Tasks
+
+**Highest Priority (Phase 2A):**
+- Image workflow optimization - MCP Server placeholder functionality
+- Image library construction for reusable assets
+
+**Medium Priority:**
+- Enhanced search functionality with filters and highlighting
+- Related articles algorithm improvements
+- Core Web Vitals optimization
+
+## Important Notes
+
+**Environment Variables Required:**
+```bash
+MICROCMS_SERVICE_DOMAIN=your-service-domain
+MICROCMS_API_KEY=your-api-key
+NEXT_PUBLIC_SITE_URL=https://ai-developer-blog.vercel.app
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
 
-## よく使用するファイル
-- **記事表示**: `src/app/articles/[slug]/page.tsx`
-- **MicroCMS連携**: `src/lib/microcms.ts`  
-- **型定義**: `src/types/microcms.ts`
-- **ヘッダー**: `src/components/layout/Header.tsx`
+**Content Management:**
+- Articles are automatically published through Claude Desktop + MCP Server integration
+- **Never use mock data** - production site uses live MicroCMS integration
+- Follow existing content patterns and SEO optimization
+- All content should be practical, engineer/enterprise-focused
 
----
+**Deployment:**
+- Production URL: https://ai-developer-blog.vercel.app
+- Auto-deployment via GitHub integration
+- MicroCMS is live production environment
 
-# 今後の開発計画
-
-## 最優先タスク（Phase 2A）
-1. **画像運用フロー確立**
-   - MCP Server画像プレースホルダー機能
-   - 画像ライブラリ構築
-   - 半自動画像生成機能（将来）
-
-## 中期改善項目（Phase 2B）
-1. **UX向上**
-   - ソーシャルシェア機能
-   - コメント機能（Disqus等）
-   - 検索機能強化
-
-2. **SEO最適化**
-   - Core Web Vitals改善
-   - 構造化データ拡充
-   - サイトマップ最適化
-
-## 長期拡張（Phase 3）
-1. **AI連携強化**
-   - 自動画像生成API
-   - コンテンツ分析機能
-   - SEO提案機能
-
-2. **運用機能**
-   - アクセス解析
-   - パフォーマンス監視
-   - 自動バックアップ
-
----
-
-# 参考リンク・ドキュメント
-
-## プロジェクト関連
-- **本番サイト**: https://ai-developer-blog.vercel.app
-- **MicroCMS管理画面**: https://your-service.microcms.io
-- **Vercelダッシュボード**: https://vercel.com/dashboard
-
-## 技術資料
-- **Next.js 14**: https://nextjs.org/docs
-- **MicroCMS**: https://document.microcms.io/
-- **Tailwind CSS**: https://tailwindcss.com/docs
-
-## MCP Server参考実装  
-- **Zenn記事**: https://zenn.dev/himara2/articles/14eb2260c4f0e4
-
----
-
-# 運用メモ
-
-## 記事更新頻度
-- **目標**: 毎日2-3記事
-- **文字数**: 500-1000文字
-- **Claude Desktop**: 直接投稿可能（MCP Server経由）
-
-## 記事品質基準
-- エンジニア・企業向けの実践的内容
-- 具体的な実装例・事例を含む
-- SEO最適化（タイトル、メタ記述、構造化データ）
-- 読了時間: 3-5分程度
-
-## 課題管理
-詳細な課題・TODO管理は `docs/TODO.md` を参照
+**For detailed TODO tracking see:** `docs/TODO.md`

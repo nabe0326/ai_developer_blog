@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 // キャッシュを無効化してリアルタイム更新を実現
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 function ArticleGridSkeleton() {
   return (
