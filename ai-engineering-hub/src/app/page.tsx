@@ -63,6 +63,7 @@ export const metadata: Metadata = {
 
 // キャッシュなし（常に最新データを取得）
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // エラーハンドリング用のフォールバックコンポーネント
 function ArticleGridSkeleton() {
