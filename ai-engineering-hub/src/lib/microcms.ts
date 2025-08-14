@@ -26,9 +26,6 @@ if (!serviceDomain || !apiKey) {
 const client = serviceDomain && apiKey ? createClient({
   serviceDomain,
   apiKey,
-  customRequestInit: {
-    cache: 'no-store', // キャッシュを完全に無効化
-  },
 }) : null;
 
 // キャッシュ無効化でリアルタイム更新を実現
