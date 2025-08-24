@@ -9,7 +9,7 @@ export async function GET() {
     const articles = await getAllArticles({ limit: 100 });
     const categories = await getCategories();
     
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com';
 
     console.log(`Sitemap generation: ${articles.length} articles, ${categories.contents.length} categories`);
 
@@ -56,7 +56,7 @@ ${categoryUrls}
     console.error('Sitemap generation error:', error);
     
     // エラー時はベース構造のみ返す
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com';
     const basicSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>

@@ -16,22 +16,22 @@ export function ArticleStructuredData({ article }: ArticleStructuredDataProps) {
     author: {
       '@type': 'Organization',
       name: '実践AI技術ブログ',
-      url: 'https://ai-developer-blog.vercel.app',
+      url: 'https://blog.aurore-tech.com',
     },
     publisher: {
       '@type': 'Organization',
       name: '実践AI技術ブログ',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ai-developer-blog.vercel.app/ogp-image.png',
+        url: 'https://blog.aurore-tech.com/ogp-image.png',
         width: 1200,
         height: 630,
       },
-      url: 'https://ai-developer-blog.vercel.app',
+      url: 'https://blog.aurore-tech.com',
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://ai-developer-blog.vercel.app/articles/${article.slug}`,
+      '@id': `https://blog.aurore-tech.com/articles/${article.slug}`,
     },
     wordCount: article.content?.length || 0,
     articleSection: article.category?.name,

@@ -4,7 +4,7 @@ import { getAllArticles } from '@/lib/microcms';
 export async function GET() {
   try {
     const articles = await getAllArticles({ limit: 100 });
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com';
 
     const articleSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

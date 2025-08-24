@@ -51,7 +51,7 @@ export async function generateMetadata(
   }
 
   const ogImage = article.featured_image?.url || getFallbackImageByCategory(article.category?.slug)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'
   const absoluteOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
 
   return {
@@ -154,10 +154,10 @@ export default async function ArticlePage({
   }
 
   const breadcrumbItems = [
-    { name: 'ホーム', url: 'https://ai-developer-blog.vercel.app' },
-    { name: '記事一覧', url: 'https://ai-developer-blog.vercel.app/articles' },
-    ...(article.category ? [{ name: article.category.name, url: `https://ai-developer-blog.vercel.app/categories/${article.category.slug}` }] : []),
-    { name: article.title, url: `https://ai-developer-blog.vercel.app/articles/${article.slug}` },
+    { name: 'ホーム', url: 'https://blog.aurore-tech.com' },
+    { name: '記事一覧', url: 'https://blog.aurore-tech.com/articles' },
+    ...(article.category ? [{ name: article.category.name, url: `https://blog.aurore-tech.com/categories/${article.category.slug}` }] : []),
+    { name: article.title, url: `https://blog.aurore-tech.com/articles/${article.slug}` },
   ];
 
   return (
@@ -293,7 +293,7 @@ export default async function ArticlePage({
       {/* Article Footer Section with Enhanced Related Articles */}
       <ArticleFooterSection 
         article={article}
-        siteUrl={process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}
+        siteUrl={process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'}
       />
     </div>
   )
