@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ai-engineering-hub-v1';
+const CACHE_NAME = 'ai-engineering-hub-v2';
 const STATIC_CACHE_URLS = [
   '/',
   '/articles',
@@ -68,58 +68,56 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Network-first strategy for HTML pages (documents)
+  if (request.destination === 'document') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          console.log('SW: Network failed, falling back to cache', request.url);
+          return caches.match(request).then((cachedResponse) => {
+            return cachedResponse || caches.match('/offline') ||
+              new Response('オフラインです', {
+                status: 200,
+                headers: { 'Content-Type': 'text/html; charset=utf-8' },
+              });
+          });
+        })
+    );
+    return;
+  }
+
+  // Cache-first strategy for static assets
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
-        // Return cached version if available
         if (cachedResponse) {
           console.log('SW: Serving from cache', request.url);
           return cachedResponse;
         }
-
-        // Network-first strategy for HTML pages
-        if (request.destination === 'document') {
-          return fetch(request)
-            .then((response) => {
-              // Cache successful responses
-              if (response.status === 200) {
-                const responseClone = response.clone();
-                caches.open(CACHE_NAME)
-                  .then((cache) => {
-                    cache.put(request, responseClone);
-                  });
-              }
-              return response;
-            })
-            .catch(() => {
-              // Show offline page if network fails
-              console.log('SW: Network failed, showing offline page');
-              return caches.match('/offline') || 
-                     new Response('オフラインです', { 
-                       status: 200, 
-                       headers: { 'Content-Type': 'text/html; charset=utf-8' }
-                     });
-            });
-        }
-
-        // Cache-first strategy for static assets
         return fetch(request)
           .then((response) => {
             if (response.status === 200) {
               const responseClone = response.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => {
-                  cache.put(request, responseClone);
-                });
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(request, responseClone);
+              });
             }
             return response;
           })
           .catch(() => {
             console.log('SW: Failed to fetch resource', request.url);
-            // Return a basic response for failed requests
-            return new Response('リソースが見つかりません', { 
-              status: 404, 
-              headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+            return new Response('リソースが見つかりません', {
+              status: 404,
+              headers: { 'Content-Type': 'text/plain; charset=utf-8' },
             });
           });
       })
