@@ -169,7 +169,7 @@ export default function ArticleCard({ article, priority = false }: ArticleCardPr
               </div>
             </div>
             <ShareButtons
-              url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}/articles/${article.slug}`}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'}/articles/${article.slug}`}
               title={article.title}
               description={article.excerpt}
               compact={true}

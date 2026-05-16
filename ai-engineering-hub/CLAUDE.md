@@ -108,7 +108,7 @@ MICROCMS_SERVICE_DOMAIN=your-service-domain
 MICROCMS_API_KEY=your-api-key
 
 # サイト設定
-NEXT_PUBLIC_SITE_URL=https://ai-developer-blog.vercel.app
+NEXT_PUBLIC_SITE_URL=https://blog.aurore-tech.com
 ```
 
 ## Development Commands
@@ -131,7 +131,7 @@ npx tsc --noEmit
 ```
 
 ## 現在のデプロイ状況
-- **本番URL**: https://ai-developer-blog.vercel.app
+- **本番URL**: https://blog.aurore-tech.com
 - **自動デプロイ**: GitHub連携で自動
 - **CMS**: MicroCMS本番環境稼働中
 - **MCP Server**: Claude Desktop連携稼働中
@@ -232,7 +232,7 @@ npx tsc --noEmit
 ```bash
 MICROCMS_SERVICE_DOMAIN=your-service-domain
 MICROCMS_API_KEY=your-api-key
-NEXT_PUBLIC_SITE_URL=https://ai-developer-blog.vercel.app
+NEXT_PUBLIC_SITE_URL=https://blog.aurore-tech.com
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
 
@@ -243,7 +243,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 - All content should be practical, engineer/enterprise-focused
 
 **Deployment:**
-- Production URL: https://ai-developer-blog.vercel.app
+- Production URL: https://blog.aurore-tech.com
 - Auto-deployment via GitHub integration
 - MicroCMS is live production environment
 

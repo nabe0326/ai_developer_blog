@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com',
     siteName: '実践AI技術ブログ',
     title: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。Dify、Claude、GPT、プロンプトエンジニアリングなどの最新AI技術について解説します。',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'}${getFallbackImageForSite()}`,
         width: 1200,
         height: 630,
         alt: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     creator: '@practical_ai_tech',
     title: '実践AI技術ブログ - エンジニアと企業向けのAI技術情報',
     description: 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。',
-    images: [`${process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'}${getFallbackImageForSite()}`],
+    images: [`${process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'}${getFallbackImageForSite()}`],
   },
   robots: {
     index: true,

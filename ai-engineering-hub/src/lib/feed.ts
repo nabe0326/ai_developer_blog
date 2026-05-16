@@ -1,6 +1,6 @@
 import { Article } from '@/types/microcms'
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai-developer-blog.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'
 const SITE_NAME = '実践AI技術ブログ'
 const SITE_DESCRIPTION = 'エンジニアと企業向けの実践的なAI技術情報を発信するブログです。Dify、Claude、GPT、プロンプトエンジニアリングなどの最新AI技術について解説します。'
 
@@ -37,7 +37,7 @@ export function generateRSSFeed(articles: Article[]): string {
       <link>${articleUrl}</link>
       <guid isPermaLink="true">${articleUrl}</guid>
       <pubDate>${new Date(article.publishedAt).toUTCString()}</pubDate>
-      <author>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</author>
+      <author>noreply@blog.aurore-tech.com (実践AI技術ブログ)</author>
       <category><![CDATA[${article.category?.name || 'その他'}]]></category>
       ${article.tags ? article.tags.split(',').map(tag => `<category><![CDATA[${tag.trim()}]]></category>`).join('\n      ') : ''}
     </item>`
@@ -54,8 +54,8 @@ export function generateRSSFeed(articles: Article[]): string {
     <link>${SITE_URL}</link>
     <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
     <language>ja</language>
-    <managingEditor>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</managingEditor>
-    <webMaster>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</webMaster>
+    <managingEditor>noreply@blog.aurore-tech.com (実践AI技術ブログ)</managingEditor>
+    <webMaster>noreply@blog.aurore-tech.com (実践AI技術ブログ)</webMaster>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
     <pubDate>${pubDate}</pubDate>
     <generator>Next.js AI Engineering Hub</generator>
@@ -89,7 +89,7 @@ export function generateAtomFeed(articles: Article[]): string {
     <published>${new Date(article.publishedAt).toISOString()}</published>
     <author>
       <name>実践AI技術ブログ</name>
-      <email>noreply@ai-developer-blog.vercel.app</email>
+      <email>noreply@blog.aurore-tech.com</email>
     </author>
     <summary type="html"><![CDATA[${article.excerpt}]]></summary>
     <content type="html"><![CDATA[${htmlContent}]]></content>
@@ -110,7 +110,7 @@ export function generateAtomFeed(articles: Article[]): string {
   <generator uri="https://nextjs.org/" version="14">Next.js</generator>
   <author>
     <name>実践AI技術ブログ</name>
-    <email>noreply@ai-developer-blog.vercel.app</email>
+    <email>noreply@blog.aurore-tech.com</email>
     <uri>${SITE_URL}</uri>
   </author>
   <icon>${SITE_URL}/favicon.ico</icon>
@@ -136,7 +136,7 @@ export function generateCategoryRSSFeed(articles: Article[], categoryName: strin
       <link>${articleUrl}</link>
       <guid isPermaLink="true">${articleUrl}</guid>
       <pubDate>${new Date(article.publishedAt).toUTCString()}</pubDate>
-      <author>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</author>
+      <author>noreply@blog.aurore-tech.com (実践AI技術ブログ)</author>
       <category><![CDATA[${categoryName}]]></category>
     </item>`
   }).join('\n')
@@ -152,8 +152,8 @@ export function generateCategoryRSSFeed(articles: Article[], categoryName: strin
     <link>${SITE_URL}/categories/${categorySlug}</link>
     <atom:link href="${SITE_URL}/categories/${categorySlug}/feed.xml" rel="self" type="application/rss+xml"/>
     <language>ja</language>
-    <managingEditor>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</managingEditor>
-    <webMaster>noreply@ai-developer-blog.vercel.app (実践AI技術ブログ)</webMaster>
+    <managingEditor>noreply@blog.aurore-tech.com (実践AI技術ブログ)</managingEditor>
+    <webMaster>noreply@blog.aurore-tech.com (実践AI技術ブログ)</webMaster>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
     <pubDate>${pubDate}</pubDate>
     <generator>Next.js AI Engineering Hub</generator>

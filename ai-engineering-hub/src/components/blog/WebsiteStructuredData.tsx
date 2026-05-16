@@ -5,12 +5,12 @@ export function WebsiteStructuredData() {
     name: '実践AI技術ブログ',
     alternateName: 'AI技術ブログ',
     description: 'エンジニアと企業向けのAI技術情報。開発事例、ツール比較、導入ノウハウから最新トレンドまで実践的な情報を発信。',
-    url: 'https://ai-developer-blog.vercel.app',
+    url: 'https://blog.aurore-tech.com',
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://ai-developer-blog.vercel.app/search?q={search_term_string}',
+        urlTemplate: 'https://blog.aurore-tech.com/search?q={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },
@@ -19,7 +19,7 @@ export function WebsiteStructuredData() {
       name: '実践AI技術ブログ',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://ai-developer-blog.vercel.app/ogp-image.png',
+        url: 'https://blog.aurore-tech.com/ogp-image.png',
         width: 1200,
         height: 630,
       },

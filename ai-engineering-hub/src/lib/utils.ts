@@ -71,7 +71,7 @@ export const stringUtils = {
 export const urlUtils = {
   // 絶対URLを生成
   createAbsoluteUrl: (path: string): string => {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.aurore-tech.com'
     return `${baseUrl}${path.startsWith('/') ? path : `/${path}`}`
   },
 
