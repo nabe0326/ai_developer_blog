@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'プライバシーポリシー',
@@ -57,7 +57,7 @@ Google Analytics の利用規約・プライバシーポリシーについては
   },
   {
     title: '8. お問い合わせ',
-    content: `プライバシーポリシーに関するお問い合わせは、下記の SNS アカウントよりご連絡ください。`,
+    content: `プライバシーポリシーに関するお問い合わせは、お問い合わせページよりご連絡ください。`,
     hasContact: true,
   },
 ];
@@ -97,23 +97,14 @@ export default function PrivacyPolicyPage() {
                   {section.content}
                 </p>
                 {section.hasContact && (
-                  <div className="mt-4 flex flex-wrap gap-4">
-                    <a
-                      href="https://github.com/nabe0326"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div className="mt-4">
+                    <Link
+                      href="/contact"
                       className="inline-flex items-center px-4 py-2 bg-accent-500 text-white font-semibold rounded-lg hover:bg-accent-600 transition-colors duration-200"
                     >
-                      GitHub
-                    </a>
-                    <a
-                      href="https://x.com/nabe_AI_dev"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition-colors duration-200"
-                    >
-                      X (Twitter)
-                    </a>
+                      お問い合わせページへ
+                      <ExternalLink className="ml-2 w-4 h-4" />
+                    </Link>
                   </div>
                 )}
               </div>
